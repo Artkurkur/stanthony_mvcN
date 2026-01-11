@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alumni Management</title>
+  <link rel="stylesheet" href="css/AccManagement.css" />
+</head>
+
+<body>
+  <div class="top-left">
+    <div class="backBtn" onclick="window.location.href='../html/mainDashB.html'">&#x2190;</div>
+    <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left" onclick="window.location.href='mainDashB.html'" />
+    <div class="top-left-text">
+      <div class="top-text">SAA Reunite!</div>
+      <div class="sub-text">Mondragon N. Samar</div>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>🎓 Alumni Management System</h1>
+
+    <div class="div-1">
+      <form id="alumniForm">
+
+        <input type="hidden" id="member_id" />
+        <div>
+          <input type="text" id="fname" placeholder="First Name" required />
+          <input type="text" id="lname" placeholder="Last Name" required />
+        </div>
+
+        <div>
+          <input type="text" id="username" placeholder="Username" required />
+          <input type="text" id="mobile_number" placeholder="Mobile Number" required />
+        </div>
+
+        <div>
+          <input type="number" id="batch_year" placeholder="Batch Year" required />
+          <input type="number" id="role_id" placeholder="Role ID" required />
+        </div>
+
+        <div>
+          <input type="password" id="password" placeholder="Password" required />
+        </div>
+
+        <button type="submit" id="saveBtn">Add Alumni</button>
+        <button type="button" id="updateBtn" style="display:none;">Update Alumni</button>
+
+      </form>
+    </div>
+
+    <hr />
+
+    <div class="div-2">
+
+      <h2>📋 Alumni List</h2>
+      <form class="search-form" action="search" method="get">
+        <input type="search" class="Search" placeholder="Search..." />
+        <button type="submit" class="Search-icon">
+          🔍
+        </button>
+      </form>
+
+      <div class="table-container">
+        <table id="alumniTable">
+          <thead>
+            <tr>
+
+              <th class="Fname">Full Name</th>
+              <th class="username">Username</th>
+              <th class="BY">Batch Year</th>
+              <th class="role">Role</th>
+              <th class="mobileN">Mobile</th>
+              <th class="actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <!-- DYNAMIC CONTENT HERE -->
+
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/AccManagement.js"></script>
+
+</body>
+
+</html>

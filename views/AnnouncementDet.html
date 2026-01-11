@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Announcement Details</title>
+    <link rel="stylesheet" href="css/AnnouncementDet.css" />
+</head>
+
+<body>
+    <div class="top-left">
+        <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left" />
+        <div class="top-left-text">
+            <div class="top-text">SAA Reunite!</div>
+            <div class="sub-text">Mondragon N. Samar</div>
+        </div>
+    </div>
+
+    <div class="Main-container" id="announcement-container">
+        <!-- Populated by JS -->
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModalOverlay" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-body">
+                <!-- Left Side: Form -->
+                <div class="modal-left">
+                    <h2 class="modal-title">Post New Announcement</h2>
+                    <div class="modal-intro">
+                        <strong>Hello, Officer!</strong><br>
+                        Got something important to share? Post updates, reminders, or announcements here and keep our
+                        alumni community informed and connected.
+                    </div>
+
+                    <!-- Decorative corner logo -->
+                    <img src="../asset/LogoSAA.png" alt="SAA Logo" class="modal-corner-logo">
+
+                    <form id="editForm">
+                        <label>Announcement Title</label>
+                        <input type="text" id="edit-title" class="modal-input" placeholder='"Reunion Schedule Posted"'>
+
+                        <div class="row-inputs">
+                            <div class="input-group">
+                                <label>Date Posted</label>
+                                <input type="text" id="edit-date" class="modal-input" placeholder="July 15, 2025">
+                            </div>
+                            <div class="input-group">
+                                <label>Time :</label>
+                                <input type="text" id="edit-time" class="modal-input" placeholder="3:42pm">
+                            </div>
+                        </div>
+
+                        <label>Category / Tag</label>
+                        <input type="text" id="edit-category" class="modal-input" placeholder="Event Update">
+
+                        <label>Message</label>
+                        <textarea id="edit-message" class="modal-input modal-textarea"
+                            placeholder="Type your message here..."></textarea>
+                    </form>
+                </div>
+
+                <!-- Right Side: Image -->
+                <div class="modal-right">
+                    <img src="../asset/Bellicon.png" alt="Bell Icon" class="modal-bell-img">
+                    <!-- Ensuring usage of a bell asset -->
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="cancelBtn" class="modal-btn btn-cancel">Cancel</button>
+                <button id="postBtn" class="modal-btn btn-post">Update Announcement</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/AnnouncementDet.js"></script>
+</body>
+
+</html>

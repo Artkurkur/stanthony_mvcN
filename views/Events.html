@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/Events.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="top-left">
+        <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left" />
+        <div class="top-left-text">
+            <div class="top-text">SAA Reunite!</div>
+            <div class="sub-text">Mondragon N. Samar</div>
+        </div>
+    </div>
+
+    <div class="Main-container">
+        <h1>Events</h1>
+        <p>- Announcement Dashboard</p>
+
+        <!-- Search and Create Event -->
+        <div class="Events-label">
+            <form class="search-form" action="search" method="get">
+                <input type="search" class="Search" placeholder="Search..." />
+                <button type="submit" class="Search-icon">🔍</button>
+            </form>
+
+            <div class="Create-event" id="createEventBtn" onclick="window.location.href='CreateNewEvent.html'"
+                style="display: none;">+</div>
+        </div>
+
+        <!-- Content box/Event display -->
+        <div class="Grid-box">
+            <div class="grid-header">All Events</div>
+
+            <!-- Event list goes in eventsList section -->
+            <div id="eventsList"></div>
+        </div>
+    </div>
+
+    <!-- Main JS -->
+    <script src="js/Events.js"></script>
+</body>
+
+</html>

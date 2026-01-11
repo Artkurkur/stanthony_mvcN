@@ -1,0 +1,748 @@
+/* --- Global Styles and Typography --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    width: 100%;
+    height: 100vh;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+/* ================================================= */
+/* ⭐ NEW: HEADER-ONLY CARD CONTAINER (Your request) ⭐ */
+/* ================================================= */
+.header-card {
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 100%;
+    padding: 30px;
+    position: relative;
+    border-radius: 0;
+}
+
+/* --- Main Container and Layout (For the full form/board) --- */
+.donation-container {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 100%;
+    padding: 30px;
+    position: relative;
+    border-radius: 0;
+    box-shadow: none;
+    height: 100vh;
+    /* Fixed height to viewport */
+    display: flex;
+    flex-direction: column;
+}
+
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    background: none;
+    border: none;
+    font-size: 4rem;
+    /* Increased size */
+    line-height: 1;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.2s;
+    padding: 0.5rem;
+    z-index: 100;
+}
+
+.close-btn:hover {
+    color: #000;
+    /* Darker on hover */
+}
+
+
+/* --- Header Section (Used by both containers) --- */
+.header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    /* Only relevant for the full container, less so for header-card */
+    gap: 15px;
+}
+
+/*SCHOLARSHIP PROGRAM AND DONATION LOGO ADJUSTMENT*/
+.header-logo {
+    width: 150px;
+    height: 100px;
+    flex-shrink: 0;
+}
+
+.header-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    margin: 0;
+    color: black;
+}
+
+.header p {
+    font-size: 14px;
+    color: #777;
+    margin-top: 5px;
+}
+
+/* --- Content Wrapper (Flexbox for two columns - only in .donation-container) --- */
+.content-wrapper {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+    width: 100%;
+    flex: 1;
+    /* Take remaining height */
+    overflow: hidden;
+    /* Prevent wrapper scroll */
+}
+
+/* --- Left Panel: Form and Dropdown Menu --- */
+.form-panel {
+    flex: 1;
+    min-width: 300px;
+    overflow-y: auto;
+    /* Allow form to scroll if needed, independently */
+}
+
+/* Base Dropdown Container for both filter and form select */
+.fundraising-dropdown-container,
+.custom-select-container {
+    position: relative;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.custom-select-container {
+    margin-bottom: 15px;
+}
+
+/* Dropdown Button Styling (Applies to both filter and form select button) */
+.dropdown-button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #e0f7fa;
+    color: #00bcd4;
+    border: 1px solid #c0e6f0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 5px rgba(0, 188, 212, 0.1);
+}
+
+/*ALL FUNDRAISING CHOICES HOVER*/
+.dropdown-button:hover {
+    background-color: #d0eff7;
+}
+
+.dropdown-button .dropdown-arrow {
+    margin-left: 10px;
+    transition: transform 0.2s;
+}
+
+.dropdown-button.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* DROPDOWN CONTENT (the actual menu) */
+.fundraising-menu {
+    list-style: none;
+    padding: 5px;
+    margin: 5px 0 0 0;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, border-color 0.3s;
+    border: 1px solid transparent;
+}
+
+.donation-type-menu {
+    margin-top: 0;
+    top: 100%;
+}
+
+.fundraising-menu.show {
+    max-height: 450px;
+    border-color: #ddd;
+}
+
+/* STYLING FOR FUNDRAISING LISTS IN THE COLUMNS */
+.fund-item {
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #797878;
+    border-radius: 8px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+.fundraising-menu li:last-child {
+    margin-bottom: 0;
+}
+
+.fund-item img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+
+/*FUNDRAISING CHOICES HOVER*/
+.fund-item:hover:not(.selected) {
+    background-color: #ffffff;
+    color: #00bcd4;
+    box-shadow: 0 4px 10px rgba(93, 236, 255, 0.815);
+    transform: translateY(-1px);
+}
+
+/*FUNDRAISING CHOICES LIST IF SELECTED */
+.fund-item.selected {
+    background-color: #ffffff;
+    color: #00bcd4;
+    font-weight: 600;
+    border-color: #ffffff;
+    box-shadow: 0 4px 10px rgba(93, 236, 255, 0.815);
+    transform: none;
+}
+
+/* --- FUNDRAISING FORM STYLES --- */
+#donation-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: black;
+    margin-bottom: 5px;
+    box-shadow: #00bcd4;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 13px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+    background-color: #fff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+.input-group input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5);
+    cursor: pointer;
+}
+
+/* Focus States */
+.dropdown-button:focus,
+.input-group input:focus,
+.input-group select:focus {
+    border-color: #00bcd4;
+    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.2);
+    outline: none;
+}
+
+.generate-receipt-btn:focus,
+.close-btn:focus,
+.action-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(103, 58, 183, 0.4);
+}
+
+
+/*GENERATE RECIEPT BUTTON ADJUSTMENT*/
+.generate-receipt-btn {
+    background-color: #1a6ac7;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    align-self: flex-end;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 4px 20px rgba(72, 239, 69, 0.623);
+    letter-spacing: 0.5px;
+}
+
+/*GENERATE RECIEPT BUTTON HOVERT*/
+.generate-receipt-btn:hover {
+    background-color: #43ef1c;
+    box-shadow: 0 6px 15px rgba(29, 111, 177, 0.89);
+}
+
+.generate-receipt-btn:active {
+    transform: scale(0.98);
+}
+
+
+/* --- RIGHT PANEL LIST OF DONATIONS ADJUSTMENT --- */
+.donation-board-panel {
+    flex: 2;
+    background-color: #fdfdfd;
+    border-radius: 15px;
+    padding: 30px 20px 20px 20px;
+    /* Increased top padding slightly to 30px for better spacing */
+    min-width: 450px;
+    height: 100%;
+    /* Fill parent */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* Prevent panel scroll */
+}
+
+/*SIZE OF TITLE ON THE LIST ADJUSTMENT*/
+.donation-board-panel h2 {
+    font-size: 30px;
+    font-weight: 600;
+    color: black;
+    margin-top: 0;
+    /* Remove default browser margin to control spacing via padding */
+    margin-bottom: 20px;
+    /* Slight increase for separation from table */
+}
+
+/* This container manages the table's scrollability. */
+.table-container {
+    overflow-x: auto;
+    max-height: 100%;
+    overflow-y: scroll;
+    flex-grow: 1;
+    padding-right: 5px;
+}
+
+.donation-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    text-align: left;
+}
+
+
+/*IN THE COLUMNS TEXT*/
+.donation-table thead th {
+    background-color: #27acf3;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px 15px;
+    border-bottom: 2px solid #ddd;
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/*DONATORS LIST TEXT STYLING*/
+.donation-table tbody td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #eee;
+    color: black;
+    vertical-align: middle;
+    font-size: small;
+}
+
+/* TABLE ROW HOVER EFFECT */
+.donation-table tbody tr:hover {
+    background-color: rgb(45, 100, 228);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(112, 114, 114, 0.4);
+    transition: all 0.3s ease;
+}
+
+.donation-table tbody tr:hover td {
+    color: #ffffff;
+}
+
+.donation-table tbody tr:hover .status-confirmed,
+.donation-table tbody tr:hover .status-pending {
+    font-weight: 700;
+}
+
+.donation-table tbody tr:hover .action-btn {
+    color: #ffffff;
+}
+
+.status-confirmed {
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.status-pending {
+    color: #ff9800;
+    font-weight: 500;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #ff6b6b;
+    padding: 5px;
+}
+
+/* --- Responsiveness (Mobile First) --- */
+@media (max-width: 900px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .donation-board-panel {
+        height: 500px;
+    }
+
+    /* Ensure the header-only card also looks good on mobile */
+    .header-card {
+        padding: 20px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+}
+
+/* --- Tablet and larger phones (900px and below) --- */
+@media (max-width: 900px) {
+
+    /* Main Layout: Switch from side-by-side to stacked columns */
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    /* Main Containers: Adjust padding and maximum width */
+    .donation-container {
+        width: 95%;
+        /* Use more horizontal space */
+        padding: 20px;
+    }
+
+    /* Right Panel (Board): Adjust height and remove minimum width constraint */
+    .donation-board-panel {
+        height: 500px;
+        min-width: unset;
+    }
+
+    /* Header (Title) */
+    .header h1 {
+        font-size: 24px;
+    }
+
+    /* Header Card */
+    .header-card {
+        padding: 20px;
+    }
+}
+
+/* --- Small Phones (576px and below) --- */
+@media (max-width: 576px) {
+
+    /* Body: Remove centering constraints to allow full width usage */
+    body {
+        min-height: auto;
+        padding: 10px 0;
+        /* Add small vertical padding */
+        display: block;
+    }
+
+    /* Main Container: Use full width and reduce padding */
+    .donation-container {
+        width: 100%;
+        padding: 10px;
+        border-radius: 0;
+        /* Remove border radius for full-screen feel */
+        box-shadow: none;
+        /* Remove box shadow */
+    }
+
+    /* Header */
+    .header {
+        flex-direction: column;
+        /* Stack logo and text */
+        align-items: flex-start;
+        padding-bottom: 15px;
+    }
+
+    .header-logo {
+        width: 100px;
+        /* Reduce logo size */
+        height: 60px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+        /* Smaller title font */
+    }
+
+    /* Board Title */
+    .donation-board-panel h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    /* Form Inputs and Dropdowns */
+    .dropdown-button,
+    .input-group input,
+    .input-group select {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
+    /* Generate Button */
+    .generate-receipt-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+        align-self: center;
+        width: 100%;
+        /* Make button full width */
+        margin-top: 10px;
+    }
+
+    /* Board Panel Padding */
+    .donation-board-panel {
+        padding: 10px;
+    }
+
+    /* Table Content: Reduce padding and font size */
+    .donation-table thead th,
+    .donation-table tbody td {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+}
+
+/* ================================================= */
+/* ⭐ SELECTION SCREEN STYLES ⭐ */
+/* ================================================= */
+
+.transaction-selection-container {
+    width: 100%;
+    flex: 1;
+    /* Take remaining height in donation-container */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.selection-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.selection-cards {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    max-width: 800px;
+    justify-content: center;
+}
+
+.selection-card {
+    flex: 1;
+    max-width: 350px;
+    height: 250px;
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    color: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.selection-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.selection-card:active {
+    transform: scale(0.98);
+}
+
+/* Donation Card Gradient (Pink/Red) */
+.donation-card {
+    background: linear-gradient(135deg, #ff8aec 0%, #ff5e62 100%);
+}
+
+/* Sponsorship Card Gradient (Cyan/Blue) */
+.sponsorship-card {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.selection-card .icon-wrapper {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.selection-card i {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.selection-card h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Specific icon adjustments - None needed yet */
+
+/* Responsive Selection Screen */
+@media (max-width: 768px) {
+    .selection-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .selection-card {
+        width: 100%;
+        max-width: 300px;
+        height: 200px;
+    }
+}
+
+/* ================================================= */
+/* ⭐ EVENT SELECTION STYLES ⭐ */
+/* ================================================= */
+
+.events-list-wrapper {
+    background-color: transparent;
+    padding: 5px 0;
+}
+
+.events-list-scrollable {
+    list-style: none;
+    padding: 5px;
+    /* Add padding for shadow space */
+    margin: 0;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.events-list-scrollable li.event-item {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: #797878;
+    border-radius: 10px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eee;
+}
+
+.events-list-scrollable li.event-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Hover Effect */
+.events-list-scrollable li.event-item:hover {
+    background-color: #ffffff;
+    color: #00bcd4;
+    box-shadow: 0 4px 10px rgba(93, 236, 255, 0.815);
+    transform: translateY(-1px);
+    border-color: #00bcd4;
+}
+
+/* Selected State */
+.events-list-scrollable li.event-item.selected {
+    background-color: #e0f7fa;
+    color: #00bcd4;
+    font-weight: 600;
+    border: 1px solid #00bcd4;
+    box-shadow: 0 4px 10px rgba(0, 188, 212, 0.2);
+    transform: none;
+}
+
+.event-date {
+    display: none;
+}

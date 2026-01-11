@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Announcements Dashboard</title>
+
+    <link rel="stylesheet" href="css/Announcements.css" />
+    <script src="https://kit.fontawesome.com/a2e0adf2d4.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="top-left">
+        <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left" />
+        <div class="top-left-text">
+            <div class="top-text">SAA Reunite!</div>
+            <div class="sub-text">Mondragon N. Samar</div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="Main-container">
+        <h1>Announcements</h1>
+
+        <!-- Search + Add -->
+        <div class="Announcements-label">
+            <form class="search-form" action="search" method="get">
+                <input type="search" class="Search" placeholder="Search..." />
+                <button type="submit" class="Search-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+
+            <div class="Create-announcement" id="createAnnouncementBtn"
+                onclick="window.location.href='CreateAnnouncement.html'" style="display: none;">+</div>
+        </div>
+
+        <!-- Announcements Section -->
+        <div class="Announcement-wrapper">
+            <div class="Announcement-grid">
+                <!-- New Post Section -->
+                <div class="Grid-box">
+                    <div class="grid-header">New Post</div>
+                    <div id="newPostList"></div>
+                </div>
+
+                <!-- Previous Post Section -->
+                <div class="Grid-box">
+                    <div class="grid-header">Previous Post</div>
+                    <div id="prevPostList"></div>
+                </div>
+            </div>
+
+            <!-- Megaphone on right side -->
+            <div class="megaphone">
+                <img src="../asset/Megaphone.png" alt="Megaphone" />
+            </div>
+        </div>
+    </div>
+
+    <script src="js/Announcements.js"></script>
+</body>
+
+</html>

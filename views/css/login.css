@@ -1,0 +1,473 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f1eded;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Use a pseudo-element for blur effect */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../../asset/bannerFlags.png') no-repeat top center;
+  background-size: cover;
+  filter: blur(2px);
+  /* 🔹 adjust blur strength (e.g., 4px–10px) */
+  z-index: -1;
+  /* keep it behind content */
+  opacity: 0.6;
+  /* optional: makes it subtle */
+}
+
+/*conatiner*/
+.container {
+  position: relative;
+  display: flex;
+  width: 900px;
+  height: 550px;
+  background: #f1eded;
+  border-radius: 30px;
+  overflow: hidden;
+  border: 3px solid #000;
+  box-shadow:
+    10px 0 20px rgba(0, 0, 0, 0.2),
+    0 -10px 20px rgba(0, 0, 0, 0.2),
+    0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  left: -80px;
+  bottom: -80px;
+  width: 500px;
+  /* adjust size */
+  height: 580px;
+  /* adjust size */
+  background: url('../../asset/St._Anthony.png') no-repeat left bottom;
+  background-size: contain;
+  filter: blur(6.5px);
+  /* adjust blur strength */
+  z-index: 0;
+  /* stay behind your content */
+}
+
+.container>* {
+  position: relative;
+  z-index: 1;
+  /* content stays above the blurred image */
+}
+
+/*left and right panel*/
+.left-panel {
+  width: 65%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.right-panel {
+  width: 35%;
+  padding: 40px;
+  background: #e7e1e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-left: solid 2px #000;
+  box-shadow: -10px 0 40px 10px rgba(141, 86, 86, 0.9);
+}
+
+/*SAA Reunite down to Alumni*/
+h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.line-text {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 300px;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.line-text hr {
+  flex: 1;
+  border: none;
+  border-top: 1px solid #000;
+  margin: 0 10px;
+}
+
+.line-text span {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/*logos*/
+.left-panel .logo-slot1 {
+  width: 100px;
+  height: 100px;
+  background: url('../../asset/LogoSAA.png') no-repeat center center;
+  background-size: 136px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+  box-shadow: 0 0 10px #28312c, 0 0 20px #313332;
+}
+
+.right-panel .logo-slot2 {
+  width: 100px;
+  height: 100px;
+  background: url('../../asset/St.Anthonylogo.jpeg') no-repeat center center;
+  background-size: contain;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.left-panel h2 {
+  letter-spacing: 3px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.left-panel h1 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.left-panel h1 span {
+  font-weight: bold;
+}
+
+.left-panel p {
+  margin: 10px 0;
+  letter-spacing: 4px;
+}
+
+/*includes Email or Phone Number, Password, Sign in, Forgot Password ?, Gmail logo*/
+.form-group {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  align-items: center;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  outline: none;
+}
+
+/*Input-goup icons*/
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  /* extra left padding for icon */
+  border: 1px solid #333;
+  border-radius: 20px;
+  outline: none;
+}
+
+.input-group .icon {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-60%);
+  font-size: 16px;
+  color: #333;
+}
+
+/*sign in button*/
+.sign-in {
+  width: 40%;
+  padding: 10px 0;
+  background: #fff;
+  border: 1px solid #42ca7a;
+  border-radius: 20px;
+  cursor: pointer;
+  color: #333;
+  box-shadow: 0 0 10px #42ca7a, 0 0 20px #42ca7a;
+  transition:
+    box-shadow 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.sign-in:hover {
+  background: #04e675;
+  /* subtle green tint */
+  color: #000;
+  /* optional: darken text for contrast */
+  box-shadow: 0 0 20px #42ca7a, 0 0 40px #42ca7a;
+  /* bigger glow on hover */
+}
+
+/*clickable Forgot Password*/
+.forgot {
+  font-size: 12px;
+  text-decoration: none;
+  color: #559eda;
+  transition: text-decoration 0.2s ease, color 0.2s ease;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+.gmail-login img {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.right-panel h3 {
+  letter-spacing: 3px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.right-panel p {
+  font-size: 12px;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.sign-up {
+  padding: 8px 30px;
+  border: 1px solid #00d2d3;
+  background: #fff;
+  color: #00d2d3;
+  border-radius: 20px;
+  box-shadow: 0 0 10px #42c1ca, 0 0 20px #41c0d6;
+  cursor: pointer;
+  transition:
+    box-shadow 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.sign-up:hover {
+  background: #00d2d3;
+  color: #fff;
+}
+
+.account-text {
+  font-size: 12px;
+  margin-top: 15px;
+}
+
+/* ------------------------------- */
+/* ✅ RESPONSIVE DESIGN */
+/* ------------------------------- */
+
+/* For tablets and small laptops */
+@media (max-width: 992px) {
+  .container {
+    width: 90%;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    padding: 30px 20px;
+    box-shadow: none;
+    border: none;
+  }
+
+  .left-panel {
+    border-bottom: 2px solid #000;
+  }
+
+  .container::before {
+    width: 400px;
+    height: 400px;
+    left: -60px;
+    bottom: -60px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  .form-group {
+    max-width: 280px;
+  }
+
+  .sign-in {
+    width: 60%;
+  }
+
+  .sign-up {
+    padding: 8px 25px;
+  }
+}
+
+/* For mobile phones */
+@media (max-width: 600px) {
+  body {
+    height: auto;
+    padding: 20px 0;
+  }
+
+  .container {
+    flex-direction: column;
+    width: 95%;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .left-panel {
+    border-bottom: 2px solid #000;
+  }
+
+  .logo-slot1,
+  .logo-slot2 {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+  }
+
+  .left-panel h1 {
+    font-size: 1.2rem;
+  }
+
+  .left-panel h2 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+
+  .line-text {
+    max-width: 220px;
+  }
+
+  .line-text span {
+    font-size: 12px;
+  }
+
+  .form-group {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .input-group input {
+    font-size: 0.9rem;
+    padding: 10px 15px 10px 35px;
+  }
+
+  .input-group .icon {
+    left: 10px;
+    font-size: 14px;
+  }
+
+  .sign-in {
+    width: 80%;
+    font-size: 0.95rem;
+  }
+
+  .forgot {
+    font-size: 11px;
+  }
+
+  .gmail-login img {
+    width: 25px;
+    height: 25px;
+  }
+
+  .right-panel h3 {
+    font-size: 0.95rem;
+  }
+
+  .right-panel p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .sign-up {
+    padding: 8px 25px;
+    font-size: 0.9rem;
+  }
+
+  .account-text {
+    font-size: 0.85rem;
+  }
+
+  /* Adjust background image position */
+  .container::before {
+    width: 300px;
+    height: 320px;
+    left: -50px;
+    bottom: -40px;
+  }
+}
+
+/* Very small screens (below 400px) */
+@media (max-width: 400px) {
+  .form-group {
+    max-width: 220px;
+  }
+
+  .sign-in {
+    width: 90%;
+  }
+
+  .sign-up {
+    padding: 6px 20px;
+  }
+
+  .left-panel h1,
+  .left-panel h2 {
+    font-size: 0.95rem;
+  }
+
+  .right-panel p {
+    font-size: 0.8rem;
+  }
+}

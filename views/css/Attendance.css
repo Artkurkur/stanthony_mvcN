@@ -1,0 +1,292 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: #f1eded;
+    padding: 20px;
+}
+
+/* Use a pseudo-element for blur effect */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../asset/bannerFlags.png') no-repeat top center;
+    background-size: cover;
+    filter: blur(2px);
+    /* 🔹 adjust blur strength (e.g., 4px–10px) */
+    z-index: -1;
+    /* keep it behind content */
+    opacity: 0.6;
+    /* optional: makes it subtle */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    position: relative;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+}
+
+.header-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.dropdown {
+    padding: 8px 16px;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #333;
+}
+
+.total-present-btn {
+    padding: 8px 16px;
+    background: #e0e0e0;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #333;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    line-height: 1;
+}
+
+.close-btn:hover {
+    color: #000;
+}
+
+.search-section {
+    margin-bottom: 25px;
+}
+
+.search-box {
+    width: 250px;
+    padding: 10px 15px 10px 40px;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>');
+    background-repeat: no-repeat;
+    background-position: 12px center;
+}
+
+.info-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.info-item {
+    font-size: 14px;
+    color: #666;
+}
+
+.info-item strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.time-box {
+    background: #e8f5e9;
+    border: 2px solid #a5d6a7;
+    border-radius: 8px;
+    padding: 12px 20px;
+    text-align: center;
+}
+
+.time-box div:first-child {
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 4px;
+}
+
+.time-box div:last-child {
+    font-size: 13px;
+    color: #558b2f;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+thead {
+    background: #c5d9f1;
+}
+
+thead th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+thead th:first-child {
+    border-radius: 8px 0 0 0;
+    width: 60px;
+    text-align: center;
+}
+
+thead th:last-child {
+    border-radius: 0 8px 0 0;
+    text-align: center;
+}
+
+tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+tbody td {
+    padding: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+tbody td:first-child {
+    text-align: center;
+    font-weight: 500;
+}
+
+.name-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    color: white;
+}
+
+.avatar.female {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.avatar.male {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.status-badge {
+    padding: 6px 20px;
+    background: #d4e3f7;
+    border-radius: 6px;
+    font-weight: 500;
+    color: #333;
+    display: inline-block;
+}
+
+.status-badge.status-going {
+    background: #d1fae5;
+    /* Green */
+    color: #065f46;
+}
+
+.status-badge.status-present {
+    background: #e5e7eb;
+    /* Grey */
+    color: #374151;
+}
+
+.status-badge.status-pending {
+    background: #f3f4f6;
+    /* Gray */
+    color: #6b7280;
+}
+
+.status-badge.status-maybe {
+    background: #ffedd5;
+    /* Orange */
+    color: #9a3412;
+}
+
+.status-badge.status-not-going {
+    background: #fee2e2;
+    /* Red */
+    color: #991b1b;
+}
+
+tbody td:last-child {
+    text-align: center;
+}
+
+.table-container {
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+.table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

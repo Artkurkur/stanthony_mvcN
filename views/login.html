@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>SAA Reunite Login</title>
+  <link rel="stylesheet" href="css/login.css" />
+  <script src="js/login.js" defer></script> <!-- ✅ external JS file -->
+</head>
+
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <h2>WELCOME TO</h2>
+      <div class="logo-slot1"></div>
+      <h1>SAA Reunite</h1>
+      <h2>St. Anthony Academy</h2>
+      <div class="line-text">
+        <hr><span>Mondragon N. Samar</span>
+        <hr>
+      </div>
+      <p><strong>ALUMNI</strong></p>
+
+      <div class="form-group">
+        <form id="loginForm" class="form-group">
+          <div class="input-group">
+            <span class="icon">&#9742;</span>
+            <input type="text" name="username" placeholder="Username" required>
+          </div>
+
+          <div class="input-group">
+            <span class="icon">&#128274;</span>
+            <input type="password" name="password" placeholder="Password" required>
+          </div>
+
+          <button type="submit" class="sign-in">Sign in</button>
+        </form>
+
+        <a href="#" class="forgot" onclick="window.location.href='forgotPass.html'">Forgot Password ?</a>
+
+
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="logo-slot2"></div>
+      <h3>HELLO , ANTHONIANS !</h3>
+      <p>Begin your reunion journey with us.<br>Let's reconnect, remember, and<br>reunite the SAA way.</p>
+      <button class="sign-up" onclick="window.location.href='registerPg.html'">Sign up</button>
+      <p class="account-text">Don't have an account?</p>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,310 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    position: relative;
+    color: #222;
+    overflow-x: hidden;
+    background-color: #fff;
+}
+
+/* Subtle blurred banner background */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../asset/bannerFlags.png') no-repeat top center;
+    background-size: cover;
+    filter: blur(2px);
+    opacity: 0.6;
+    z-index: -1;
+}
+
+/* Top-left logo & text */
+.top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.logo-left {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.top-left-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.top-text {
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.sub-text {
+    font-size: 1rem;
+    color: #515253;
+    margin-top: 5px;
+}
+
+/* Main form container */
+.Main-container {
+    background: #f6f6f6;
+    border: solid 1px black;
+    border-radius: 25px;
+    width: 1000px;
+    margin: 60px auto;
+    padding: 40px 60px;
+    box-shadow: 8px 8px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.container-header {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 25px;
+    max-width: 600px;
+}
+
+/* Form layout */
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    position: relative;
+    max-width: 70%;
+    /* keeps fields away from bell */
+    z-index: 1;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Date and time inline */
+.date-time-group {
+    display: flex;
+    gap: 20px;
+}
+
+.input-group {
+    flex: 1;
+}
+
+/* Buttons */
+.bell-and-buttons {
+    position: absolute;
+    right: -335px;
+    bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.cancelbtn,
+.Post-announcementbtn {
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.cancelbtn {
+    background-color: white;
+    border: 2px solid #c82333;
+    color: #c82333;
+}
+
+.cancelbtn:hover {
+    background-color: #c82333;
+    color: #fff;
+}
+
+.Post-announcementbtn {
+    background-color: #007bff;
+    color: white;
+    border: 2px solid #007bff;
+}
+
+.Post-announcementbtn:hover {
+    background-color: #0056b3;
+}
+
+/* Bell image styling */
+.bell-image {
+    background: url('../../asset/Bellicon.png') no-repeat center center;
+    background-size: contain;
+    width: 350px;
+    height: 350px;
+    margin-bottom: 40px;
+}
+
+.bell-and-buttons .button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+/* ===============================
+   🔹 RESPONSIVE DESIGN SECTION
+   =============================== */
+
+/* Tablets (≤1024px) */
+@media (max-width: 1024px) {
+    .Main-container {
+        width: 85%;
+        padding: 30px 40px;
+    }
+
+    .form-section {
+        max-width: 100%;
+    }
+
+    .bell-and-buttons {
+        right: -250px;
+    }
+
+    .bell-image {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+/* Medium screens (≤768px) */
+@media (max-width: 768px) {
+    .Main-container {
+        width: 90%;
+        padding: 30px 30px;
+    }
+
+    .top-left {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 20px;
+    }
+
+    .form-section {
+        max-width: 100%;
+    }
+
+    .date-time-group {
+        flex-direction: column;
+    }
+
+    .bell-and-buttons {
+        position: static;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+    }
+
+    .bell-image {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 20px;
+    }
+
+    .bell-and-buttons .button-group {
+        flex-direction: row;
+        gap: 10px;
+    }
+}
+
+/* Phones (≤480px) */
+@media (max-width: 480px) {
+    .Main-container {
+        width: 95%;
+        padding: 25px 20px;
+    }
+
+    .container-header {
+        font-size: 22px;
+    }
+
+    .top-text {
+        font-size: 1.3rem;
+    }
+
+    .sub-text {
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    p {
+        font-size: 13px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    textarea {
+        font-size: 13px;
+    }
+
+    .bell-image {
+        width: 160px;
+        height: 160px;
+    }
+
+    .cancelbtn,
+    .Post-announcementbtn {
+        padding: 8px 20px;
+        font-size: 13px;
+    }
+}

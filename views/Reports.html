@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Donation Dashboard</title>
+    <link rel="stylesheet" href="css/Reports.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+        <button class="btn-icon-close"><i class="fa-solid fa-xmark"></i></button>
+
+        <header class="header-section">
+            <div class="profile-group">
+                <img src="Image/report_profile.png" alt="My Profile" class="user-avatar" id="userProfileImg">
+                <div class="text-content">
+                    <h1 id="userGreeting">Hello, Juan Dela Cruz!</h1>
+                    <p class="subtitle">This dashboard gives you access to essential reports that help monitor,
+                        evaluate, and manage alumni campaigns and participation.</p>
+                </div>
+            </div>
+        </header>
+
+        <nav class="toolbar">
+            <div class="left-controls">
+                <div class="search-area">
+                    <div class="search-input-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search">
+                    </div>
+                    <span class="search-hint">(e.g., donor name, event title, or campaign name)</span>
+                </div>
+
+                <div class="date-info">Today, Fri 18 July</div>
+
+                <div class="custom-dropdown" id="reportDropdown">
+                    <div class="dropdown-header">
+                        <span>Select Reports</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <ul class="dropdown-list">
+                        <li>Scholarship Program</li>
+                        <li>Outreach Program</li>
+                        <li>Alumni Grand Reunion</li>
+                        <li>Infrastructure Support</li>
+                        <li>General Fund</li>
+                        <li>Events</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="export-controls">
+                <span class="export-label">Export Report As:</span>
+
+                <label class="radio-option">
+                    <input type="radio" name="exportFormat" value="pdf"> PDF
+                </label>
+
+                <label class="radio-option">
+                    <input type="radio" name="exportFormat" value="excel"> Excel (.xlsx)
+                </label>
+
+                <label class="radio-option">
+                    <input type="radio" name="exportFormat" value="print"> Print View
+                </label>
+
+                <button id="downloadBtn" class="download-summary" disabled>Download Summary</button>
+            </div>
+
+        </nav>
+
+        <main class="main-content">
+            <h2 class="section-title">Donation Overview</h2>
+            <div class="table-frame">
+                <table class="donation-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Events</th>
+                            <th>Total Donations</th>
+                            <th>Total Donors</th>
+                            <th>Status</th>
+                            <th>Top Donor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scroll-data">
+                        <!-- Data will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+    </div>
+
+    <script src="js/Reports.js"></script>
+</body>
+
+</html>

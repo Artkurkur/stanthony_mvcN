@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification Dashboard</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Back Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/Notification.css">
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+        <!-- Shared SVG Definitions -->
+        <svg width="0" height="0" style="position: absolute; visibility: hidden;">
+            <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FF8C00;stop-opacity:1" />
+                </linearGradient>
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="2" dy="2" stdDeviation="2" flood-color="rgba(0,0,0,0.3)" />
+                </filter>
+            </defs>
+        </svg>
+        <!-- Header -->
+        <header class="dashboard-header">
+            <button class="back-btn" aria-label="Go back">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <h1>Notification</h1>
+            <div class="notification-badge">0</div>
+        </header>
+
+        <!-- Split Layout -->
+        <div class="split-dashboard">
+            <!-- Left: Feed/Drafts -->
+            <div class="dashboard-section left-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-file-pen"></i> Drafts & Feed</h2>
+                </div>
+                <div class="notification-list" id="feed-list">
+                    <!-- Dynamic Feed Content -->
+                </div>
+            </div>
+
+            <!-- Right: Sent History -->
+            <div class="dashboard-section right-section">
+                <div class="section-header">
+                    <h2><i class="fa-solid fa-paper-plane"></i> Sent Messages</h2>
+                </div>
+                <div class="notification-list" id="sent-list">
+                    <!-- Dynamic Sent Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Popup -->
+    <div id="notification-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="modal-close" class="modal-close-btn" aria-label="Close modal"><i
+                    class="fa-solid fa-xmark"></i></button>
+            <div class="modal-header">
+                <span id="modal-tag" class="category-tag">Category</span>
+                <svg class="bell-icon-modal" viewBox="0 0 512 512" width="45" height="45">
+                    <path fill="url(#grad1)" filter="url(#shadow)"
+                        d="M256,48C141.1,48,48,141.1,48,256v48c0,13.3-10.7,24-24,24S0,338.7,0,352c0,13.3,10.7,24,24,24h464c13.3,0,24-10.7,24-24s-10.7-24-24-24s-24-10.7-24-24v-48C464,141.1,370.9,48,256,48z" />
+                    <circle cx="256" cy="416" r="40" fill="#DAA520" />
+                </svg>
+            </div>
+
+            <div class="modal-body">
+                <span id="modal-date" class="modal-timestamp"><i class="fa-regular fa-clock"></i> 30 Sept at
+                    8:35pm</span>
+                <h2 id="modal-title">Notification Title</h2>
+                <p id="modal-description">Detailed description goes here.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/Notification.js"></script>
+</body>
+
+</html>

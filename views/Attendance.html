@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance List - Alumni Grand Reunion</title>
+    <link rel="stylesheet" href="css/Attendance.css">
+</head>
+
+<body>
+    <div class="container">
+        <button class="close-btn">×</button>
+
+        <div class="header">
+            <h1>Attendance List - Alumni Grand Reunion</h1>
+            <div class="header-controls">
+                <select class="dropdown">
+                    <option>Summary List</option>
+                    <option>Detailed List</option>
+                </select>
+                <button class="total-present-btn">
+                    Total Present 🕐
+                </button>
+            </div>
+        </div>
+
+        <div class="search-section">
+            <input type="text" class="search-box" placeholder="Search" id="searchInput">
+        </div>
+
+        <div class="info-section">
+            <div class="info-item">
+                <strong>Date:</strong> --
+            </div>
+            <div class="info-item">
+                <strong>Location:</strong> --
+            </div>
+            <div class="info-item">
+                <strong>Total Attendees:</strong> 0
+            </div>
+            <div class="time-box">
+                <div>Start</div>
+                <div>--:--</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>Batch</th>
+                        <th>Mark</th>
+                    </tr>
+                </thead>
+                <tbody id="attendanceTable">
+                    <!-- Dynamic Content -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/Attendance.js"></script>
+</body>
+
+</html>

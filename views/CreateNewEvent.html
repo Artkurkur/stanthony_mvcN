@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create New Event</title>
+    <link rel="stylesheet" href="css/CreateNewEvent.css" />
+    <script src="https://kit.fontawesome.com/a2e0adf2d4.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="top-left">
+        <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left" />
+        <div class="top-left-text">
+            <div class="top-text">SAA Reunite!</div>
+            <div class="sub-text">Mondragon N. Samar</div>
+        </div>
+    </div>
+
+
+    <div class="Main-container">
+        <h1 class="title">Create New Event</h1>
+        <hr>
+        <div id="message-container"></div>
+
+        <form class="Event-form">
+            <div class="form-grid">
+                <div class="left-column">
+                    <label><i class="fa-solid fa-champagne-glasses"></i> Name Your Event</label>
+                    <input type="text" placeholder="Enter event title">
+
+                    <div class="two-cols">
+                        <div>
+                            <label><i class="fa-regular fa-calendar"></i> Event Date</label>
+                            <input type="date">
+                        </div>
+                        <div>
+                            <label><i class="fa-regular fa-calendar"></i> Contribution Deadline</label>
+                            <input type="date">
+                        </div>
+                    </div>
+
+                    <div class="two-cols">
+                        <div>
+                            <label><i class="fa-regular fa-clock"></i> Start Time</label>
+                            <input type="time">
+                        </div>
+                        <div>
+                            <label><i class="fa-regular fa-clock"></i> End Time</label>
+                            <input type="time">
+                        </div>
+                    </div>
+
+                    <div class="two-cols">
+                        <div>
+                            <label><i class="fa-solid fa-party-horn"></i> Event Type</label>
+                            <input type="text" placeholder="Reunion, Meeting, etc.">
+                        </div>
+                        <div>
+                            <label><i class="fa-solid fa-users"></i> Batch</label>
+                            <input type="text" placeholder="e.g. 2005">
+                        </div>
+                    </div>
+
+                    <label><i class="fa-solid fa-location-dot"></i> Location</label>
+                    <input type="text" placeholder="Enter venue or address">
+
+                    <label><i class="fa-solid fa-microphone"></i> Hosted By</label>
+                    <input type="text" placeholder="e.g. Batch 2005">
+
+                    <label><i class="fa-solid fa-peso-sign"></i> Target Amount</label>
+                    <input type="number" placeholder="Enter target contribution amount" step="0.01" min="0">
+                </div>
+
+                <div class="right-column">
+                    <label>About Event</label>
+                    <textarea placeholder="Write a brief description about the event..."></textarea>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="Cancel" onclick="window.location.href='Events.html'">Cancel</button>
+                <button type="submit" class="Submit">Save Event</button>
+            </div>
+        </form>
+    </div>
+    <script src="js/CreateNewEvent.js"></script>
+</body>
+
+</html>

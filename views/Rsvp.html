@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP and Attendance Management - Event Announcement</title>
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="css/Rsvp.css">
+
+    <!-- Tailwind CSS (Kept only for potentially missed generic utilities, but strictly using separate CSS for main UI) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="tailwind.config.js"></script>
+</head>
+
+<body>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+        <!-- Page 1: Announcement Dashboard -->
+        <div id="dashboardPage" class="page page-container active">
+            <!-- Header -->
+            <div class="page-header">
+                <div class="header-left-group">
+                    <!-- Logo -->
+                    <div class="logo-container">
+                        <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left">
+                    </div>
+                    <div class="header-text-group">
+                        <div class="section-label mb-1">RSVP and Attendance management</div>
+                        <div class="header-title-main">Event Announcement</div>
+                        <div class="header-subtitle-main">Batch 2016</div>
+                    </div>
+                </div>
+                <!-- Interactive Close Button -->
+                <button class="close-btn" aria-label="Close" data-action="reload">&times;</button>
+            </div>
+
+            <!-- All Announcement Section -->
+            <div class="section-label">All Events</div>
+
+            <!-- List Container -->
+            <div class="announcement-list-box custom-scrollbar" id="announcementListContainer">
+                <!-- Inner List Wrapper -->
+                <div class="announcement-items-wrapper" id="announcementList">
+                    <!-- Announcements will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Page 2: Detail & RSVP View -->
+        <div id="detailPage" class="page page-container">
+            <!-- Header -->
+            <div class="page-header">
+                <div class="header-left-group">
+                    <div class="logo-container">
+                        <img src="../asset/Rsvp/SystemLogo.png" alt="Logo" class="logo-img">
+                    </div>
+                    <div class="header-text-group">
+                        <div class="section-label mb-1">RSVP and Attendance management</div>
+                        <div class="header-title-main">Event Announcement</div>
+                        <div class="header-subtitle-main">Batch 2016</div>
+                    </div>
+                </div>
+                <!-- Back Button -->
+                <button class="close-btn" aria-label="Close" data-action="back">&times;</button>
+            </div>
+
+            <!-- Content Grid for Detail Page -->
+            <div class="content-scroll-area custom-scrollbar">
+
+                <!-- Card 1: Event Details (Top) -->
+                <div id="eventDetails" class="card-details-top group">
+                    <div class="card-details-glow"></div>
+                    <!-- Content injected via JS -->
+                </div>
+
+                <!-- Card 2: RSVP Form (Bottom) -->
+                <div class="card-form-bottom">
+                    <div class="form-title">Ready to Connect</div>
+                    <div class="form-description">Fill out your details below and confirm your spot at the event. We
+                        can't wait to see you there!</div>
+
+                    <form id="rsvpForm" class="rsvp-form-layout">
+                        <!-- Top Row: Event Name & Response -->
+                        <div class="form-row-top">
+                            <!-- Event Label & Display -->
+                            <div class="form-group-event">
+                                <label class="form-label min-w-[80px]">Event :</label>
+                                <div id="eventFieldDisplay" class="form-value-display"></div>
+                                <input type="hidden" id="eventField">
+                            </div>
+
+                            <!-- Response Dropdown -->
+                            <div class="form-group-response">
+                                <label for="response" class="form-label">Response</label>
+                                <div class="custom-select-wrapper">
+                                    <select id="response" class="select-input">
+                                        <option value="Going" class="bg-white text-black">Going</option>
+                                        <option value="Maybe" class="bg-white text-black">Maybe</option>
+                                        <option value="Not-going" class="bg-white text-black">Not-going</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Middle Row: Remarks -->
+                        <div class="form-group-remarks">
+                            <label for="remarks" class="form-label">Remarks</label>
+                            <textarea id="remarks" class="form-textarea" placeholder="Tell us something.."></textarea>
+                        </div>
+
+                        <!-- Bottom Row: Buttons -->
+                        <div class="form-actions">
+                            <button type="button" id="cancelBtn" class="btn-base btn-cancel">Cancel / Back</button>
+                            <button type="submit" class="btn-base btn-submit">Submit RSVP</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Logic -->
+    <script src="js/Rsvp.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,245 @@
+* {
+    margin-top: 10px;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f1eded;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* Use a pseudo-element for blur effect */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../asset/bannerFlags.png') no-repeat top center;
+    background-size: cover;
+    filter: blur(2px);
+    /* 🔹 adjust blur strength (e.g., 4px–10px) */
+    z-index: -1;
+    /* keep it behind content */
+    opacity: 0.6;
+    /* optional: makes it subtle */
+}
+
+/* ===== TOP LEFT (Logo + Title) ===== */
+.top-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: -40px;
+}
+
+.logo-left {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.top-left-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.top-text {
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.sub-text {
+    font-size: 1rem;
+    color: #515253;
+    margin-top: 5px;
+    margin-bottom: 20px
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #f1eded;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    margin: 0;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.controls {
+    padding: 20px 30px;
+    background: #f1eded;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.search-box {
+    flex: 1;
+    min-width: 250px;
+}
+
+.search-box input {
+    background: #f1eded;
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.filter-select {
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    background: #f1eded;
+    cursor: pointer;
+}
+
+.table-container {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 550px;
+    /* Limit height to allow scrolling */
+    padding: 30px;
+    border-top: 1px solid #e0e0e0;
+    /* Optional separator */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #f8f9fa;
+    /* Solid color for sticky header */
+    position: sticky;
+    top: -30px;
+    z-index: 10;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    /* Optional shadow */
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 14px;
+    color: #212529;
+}
+
+tbody tr {
+    transition: background-color 0.2s;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-login {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-logout {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.badge-create {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-update {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-delete {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.badge-view {
+    background: #e2e3e5;
+    color: #383d41;
+}
+
+.user-id {
+    font-family: 'Courier New', monospace;
+    background: #e9ecef;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.no-data {
+    text-align: center;
+    padding: 40px;
+    color: #6c757d;
+    font-size: 16px;
+}
+
+@media (max-width: 768px) {
+    .table-container {
+        padding: 15px;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+}

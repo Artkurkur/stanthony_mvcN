@@ -1,0 +1,300 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    color: #222;
+    padding-bottom: 70px;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../asset/bannerFlags.png') no-repeat top center;
+    background-size: cover;
+    filter: blur(3px);
+    opacity: 0.6;
+    z-index: -1;
+}
+
+/* Header */
+.top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.logo-left {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.top-text {
+    font-size: 1.6rem;
+    font-weight: bold;
+}
+
+.sub-text {
+    font-size: 1rem;
+    color: #515253;
+}
+
+/* Title */
+.title {
+    text-align: left;
+    margin: -5px 0 30px 10px;
+}
+
+hr {
+    border: none;
+    height: 3px;
+    background-color: #222;
+    margin: 10px 0 30px 0;
+    border-radius: 2px;
+}
+
+/* Main container */
+.Main-container {
+    background: #fff;
+    border: 2px solid #000;
+    border-radius: 20px;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 40px;
+    padding: 40px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.Main-container::after {
+    content: "";
+    position: absolute;
+    bottom: -400px;
+    right: -330px;
+    width: 1000px;
+    height: 1000px;
+    background: url('../../asset/LogoSAA.png') no-repeat;
+    background-size: contain;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.form-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+/* Columns */
+.left-column {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.right-column {
+    flex: 0.8;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-top: 10px;
+    display: block;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-bottom: 2px solid #333;
+    background: transparent;
+    outline: none;
+    font-size: 0.95rem;
+}
+
+textarea {
+    min-height: 180px;
+    resize: none;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 10px;
+    background: #fafafa;
+}
+
+/* Icons */
+label i {
+    margin-right: 6px;
+    color: #555;
+}
+
+/* Two-column layout inside left */
+.two-cols {
+    display: flex;
+    gap: 20px;
+}
+
+.two-cols>div {
+    flex: 1;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.Cancel,
+.Submit {
+    padding: 10px 30px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.Cancel {
+    background: white;
+    border: 2px solid red;
+    color: red;
+}
+
+.Submit {
+    background: white;
+    border: 2px solid #28a745;
+    color: #28a745;
+}
+
+.Cancel:hover {
+    background: red;
+    color: white;
+}
+
+.Submit:hover {
+    background: #28a745;
+    color: white;
+}
+
+/* --- Responsive Design --- */
+
+/* Tablets and smaller screens */
+@media (max-width: 992px) {
+    .Main-container {
+        width: 90%;
+        padding: 30px;
+    }
+
+    .two-cols {
+        flex-direction: column;
+    }
+}
+
+/* Mobile screens */
+@media (max-width: 600px) {
+    .top-left {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 15px;
+        gap: 5px;
+    }
+
+    .logo-left {
+        width: 60px;
+        height: 60px;
+    }
+
+    .top-text {
+        font-size: 1.3rem;
+    }
+
+    .sub-text {
+        font-size: 0.85rem;
+    }
+
+    .title {
+        margin-left: 15px;
+        font-size: 1.4rem;
+    }
+
+    .Main-container {
+        width: 95%;
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .form-grid {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    input,
+    textarea {
+        font-size: 0.9rem;
+    }
+
+    textarea {
+        min-height: 120px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .Cancel,
+    .Submit {
+        width: 80%;
+    }
+}
+
+/* Extra small (for phones under 400px) */
+@media (max-width: 400px) {
+    .title {
+        font-size: 1.2rem;
+    }
+
+    .logo-left {
+        width: 50px;
+        height: 50px;
+    }
+
+    label {
+        font-size: 0.85rem;
+    }
+
+    input,
+    textarea {
+        font-size: 0.85rem;
+        padding: 6px;
+    }
+
+    .Cancel,
+    .Submit {
+        width: 100%;
+        padding: 8px 20px;
+    }
+}

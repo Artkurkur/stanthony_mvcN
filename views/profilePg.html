@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="css/profilePg.css">
+</head>
+
+<body>
+    <div class="header-container">
+        <div class="top-left">
+            <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left"
+                onclick="window.location.href='mainDashB.html'">
+            <div class="top-left-text">
+                <div class="top-text">SAA Reunite</div>
+                <div class="sub-text">Mondragon N. Samar</div>
+            </div>
+        </div>
+
+        <!-- MAIN VIEW -->
+        <div class="main-banner">
+            <img src="../asset/smplProfile.jpg" alt="Profile pic" class="profile-logo" id="profileImage">
+
+            <div class="profile-form">
+                <div id="error-message" class="message"></div>
+                <div id="success-message" class="message"></div>
+
+                <label for="name">Name</label>
+                <input type="text" id="name" readonly>
+
+                <label for="batch">Batch Year</label>
+                <input type="text" id="batch" readonly>
+
+                <label for="role">Role</label>
+                <input type="text" id="role" readonly>
+
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" readonly>
+
+                <label for="username">Username</label>
+                <input type="text" id="username" readonly>
+
+                <button type="button" id="updateBtn">
+                    Update Profile
+                </button>
+            </div>
+        </div>
+
+        <!-- EDIT MODE -->
+        <div class="edit-mode" id="editMode">
+            <h2>Edit Profile</h2>
+
+            <form>
+                <img id="editProfileImage" src="../asset/smplProfile.jpg" class="profile-logo" alt="Profile Picture">
+
+                <button type="button" id="changePictureBtn">📷 Change Picture</button>
+                <input type="file" id="profilePictureInput" accept="image/*">
+
+                <div id="error-message" class="message"></div>
+                <div id="success-message" class="message"></div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="firstName" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="lastName" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Batch Year</label>
+                        <input type="text" id="batchYear" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" id="roleEdit" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="phoneEdit">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="usernameEdit">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-save">Save</button>
+                    <button type="button" class="btn btn-cancel" id="cancelBtn">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- External JS -->
+    <script src="js/profilePg.js"></script>
+</body>
+
+</html>

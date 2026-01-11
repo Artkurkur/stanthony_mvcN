@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Details</title>
+    <link rel="stylesheet" href="css/EventDet.css" />
+    <script src="https://kit.fontawesome.com/a2e0adf2d4.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="top-left">
+        <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left" />
+        <div class="top-left-text">
+            <div class="top-text">SAA Reunite!</div>
+            <div class="sub-text">Mondragon N. Samar</div>
+        </div>
+    </div>
+
+    <div class="main-banner">
+        <div class="sub-banner" id="eventSubBanner"></div>
+
+        <div class="saint-img">
+            <img src="../asset/St.AnthonyMD.png" alt="Saint Image">
+        </div>
+    </div>
+
+    <!-- Update Event Modal -->
+    <div id="updateEventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Update Event</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="modal-title-display" id="modalTitleDisplay">Event Name</div>
+
+                <form id="updateEventForm">
+                    <div class="modal-grid-layout">
+                        <!-- Left Column: Main Fields -->
+                        <div class="modal-left-col">
+
+                            <div class="form-group">
+                                <label><i class="fas fa-bullhorn"></i> Name Your Event</label>
+                                <input type="text" id="eventName" name="eventName" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                    <label><i class="fas fa-calendar-alt"></i></label> <!-- Icon only or with date -->
+                                    <input type="date" id="eventDate" name="eventDate" required>
+                                </div>
+                                <div class="form-group half-width">
+                                    <label><i class="fas fa-calendar-check"></i></label>
+                                    <input type="date" id="contributionDeadline" name="contributionDeadline">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group half-width">
+                                    <label><i class="fas fa-clock"></i></label>
+                                    <input type="time" id="startTime" name="startTime" required>
+                                </div>
+                                <div class="form-group half-width">
+                                    <label><i class="fas fa-clock"></i></label>
+                                    <input type="time" id="endTime" name="endTime">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fas fa-flag"></i> Event Type</label>
+                                <input type="text" id="eventType" name="eventType" placeholder="Reunion, etc.">
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fas fa-map-marker-alt"></i> Location</label>
+                                <input type="text" id="location" name="location" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label><i class="fas fa-users"></i> Batch</label>
+                                <input type="text" id="batch" name="batch">
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Description -->
+                        <div class="modal-right-col">
+                            <label>About Event</label>
+                            <textarea id="eventDescription" name="eventDescription"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+                        <button type="submit" class="btn-save">Save Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="js/EventDet.js"></script>
+
+</body>
+
+</html>

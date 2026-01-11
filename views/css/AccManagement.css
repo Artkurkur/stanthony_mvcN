@@ -1,0 +1,465 @@
+* {
+  margin-top: 20px;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  position: relative;
+  font-family: "Segoe UI", sans-serif;
+  background: #f4f7f9;
+  padding-bottom: 70px;
+  overflow-x: hidden;
+}
+
+/* Background blur image */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../../asset/bannerFlags.png') no-repeat top center;
+  background-size: cover;
+  filter: blur(2px);
+  z-index: -1;
+  opacity: 0.6;
+}
+
+/* HEADER AREA */
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -40px;
+  margin-left: 30px;
+}
+
+.backBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+  background: transparent;
+  border: 1px solid rgba(0, 0, 0, 0.466);
+}
+
+.logo-left {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.top-left-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.top-text {
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.sub-text {
+  font-size: 1rem;
+  color: #515253;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+
+/* MAIN CONTAINER */
+.container {
+  background: #f0ecec;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* TITLES & FORMS */
+h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+form div {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+}
+
+button {
+  padding: 10px 20px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  border: 2px solid #333;
+  border-radius: 20px;
+  overflow: hidden;
+  padding: 5px 10px;
+}
+
+.Search {
+  margin: 0%;
+  background: #ebe0e0;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.Search-icon {
+  background: none;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  margin: 0%;
+}
+
+.Search-icon:hover {
+  border: none;
+  background: none;
+}
+
+/* TABLE STYLING */
+.table-container {
+  height: 60vh;
+  /* limits overall table section height */
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container thead th {
+  position: sticky;
+  top: 0;
+  background: #dcdcdc;
+  z-index: 2;
+  text-align: left;
+}
+
+/* ✅ only tbody scrolls */
+.table-container tbody {
+  display: block;
+  max-height: 50vh;
+  /* controls the scrollable height inside table */
+  overflow-y: auto;
+}
+
+/* keep column alignment */
+.table-container thead {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.table-container tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* Optional — better scrollbar */
+.table-container tbody::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container tbody::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 6px;
+}
+
+#alumniTable {
+  height: 70vh;
+}
+
+table {
+  border: solid 1px black;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.id {
+  width: 50px;
+}
+
+.Fname {
+  width: 150px;
+}
+
+.email {
+  width: 230px;
+}
+
+.BY {
+  width: 100px;
+  margin-left: 10px;
+  text-align: center;
+}
+
+.role {
+  width: 50px;
+  text-align: center;
+}
+
+.mobileN {
+  width: 110px;
+  text-align: center;
+}
+
+
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.actions button {
+  margin-right: 5px;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+.actions .edit {
+  background: #ffc107;
+}
+
+.actions .delete {
+  background: #dc3545;
+  color: white;
+}
+
+/* ============================= */
+/*        MOBILE RESPONSIVE      */
+/* ============================= */
+@media (max-width: 768px) {
+
+  * {
+    margin-top: 10px;
+  }
+
+  body {
+    padding-bottom: 40px;
+  }
+
+  .top-left {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+  }
+
+  .top-left-text {
+    margin: 0;
+  }
+
+  .logo-left {
+    width: 80px;
+    height: 80px;
+  }
+
+  .top-text {
+    font-size: 1.3rem;
+  }
+
+  .sub-text {
+    font-size: 0.9rem;
+  }
+
+  .container {
+    padding: 20px;
+    margin: 10px;
+    width: 95%;
+  }
+
+  form div {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  input {
+    font-size: 0.9rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .Search {
+    margin: 0%;
+    background: #ebe0e0;
+    border: none;
+    outline: none;
+    padding: 10px;
+    font-size: 1rem;
+  }
+
+  .Search-icon {
+    width: 60px;
+  }
+
+  .Search-icon:hover {
+    border: none;
+    background: none;
+  }
+
+  /* 📱 Mobile Table Layout */
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  .table-container {
+    height: 50vh;
+    /* limits overall table section height */
+    overflow: hidden;
+    margin-top: 5px;
+  }
+
+  #alumniTable {
+    height: 70vh;
+  }
+
+
+  table {
+    border: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+  }
+
+  th {
+    display: none;
+  }
+
+  td {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    /* align vertically top */
+    text-align: left;
+    padding: 8px 0;
+    flex-direction: column;
+    /* label on top, value below */
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: capitalize;
+    margin-bottom: 3px;
+    color: #333;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-start;
+    /* 👈 actions also left-aligned */
+    gap: 5px;
+  }
+
+  .actions button {
+    flex: 1;
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ============================= */
+/* MOBILE COMPACT LIST VIEW */
+/* ============================= */
+@media (max-width: 768px) {
+
+  /* Hide all columns except Full Name and Actions */
+  #alumniTable td:nth-child(1),
+  /* ID */
+  #alumniTable td:nth-child(3),
+  /* Email */
+  #alumniTable td:nth-child(4),
+  /* Batch Year */
+  #alumniTable td:nth-child(5),
+  /* Role */
+  #alumniTable td:nth-child(6) {
+    /* Mobile */
+    display: none;
+  }
+
+  /* Adjust table layout for compact look */
+  #alumniTable tr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    background: #fff;
+  }
+
+  #alumniTable td:nth-child(2) {
+    /* Full Name */
+    font-weight: 600;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  /* Compact actions beside the name */
+  #alumniTable .actions {
+    display: flex;
+    gap: 5px;
+  }
+
+  #alumniTable .actions button {
+    font-size: 0.8rem;
+    padding: 6px 10px;
+  }
+
+  /* Hide table header entirely */
+  #alumniTable thead {
+    display: none;
+  }
+}

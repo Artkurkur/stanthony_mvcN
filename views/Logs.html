@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Access Logs</title>
+    <link rel="stylesheet" href="css/Logs.css">
+</head>
+
+<body>
+    <div class="top-left">
+        <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left">
+        <div class="top-left-text">
+            <div class="top-text">SAA Reunite</div>
+            <div class="sub-text">Mondragon N. Samar</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>📊 System Access Logs</h1>
+            <p>Monitor and track all user activities and system actions</p>
+        </div>
+
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 Search by user name, action, or details...">
+            </div>
+            <select id="actionFilter" class="filter-select">
+                <option value="all">All Actions</option>
+                <option value="login">Login</option>
+                <option value="logout">Logout</option>
+                <option value="create">Create</option>
+                <option value="update">Update</option>
+                <option value="delete">Delete</option>
+                <option value="view">View</option>
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table id="logsTable">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>User ID</th>
+                        <th>User Name</th>
+                        <th>Action</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody id="logsBody">
+                    <!-- Data will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="js/Logs.js"></script>
+</body>
+
+</html>

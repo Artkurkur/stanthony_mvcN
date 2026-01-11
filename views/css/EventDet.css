@@ -1,0 +1,399 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    position: relative;
+    color: #222;
+    padding-bottom: 70px;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../asset/bannerFlags.png') no-repeat top center;
+    background-size: cover;
+    filter: blur(3px);
+    z-index: -1;
+    opacity: 0.6;
+}
+
+.top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.logo-left {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.top-left-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.top-text {
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.sub-text {
+    font-size: 1rem;
+    color: #515253;
+    margin-top: 5px;
+}
+
+.main-banner {
+    border: 1px solid #000;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    margin: 20px auto;
+    margin-top: 80px;
+    width: 70%;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.sub-banner {
+    flex: 1.5;
+    border: 1px solid #000;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    background: #fff;
+}
+
+hr {
+    border: none;
+    height: 3px;
+    background-color: #222;
+    margin: 10px 0;
+    border-radius: 2px;
+}
+
+.saint-img {
+    flex: 0.6;
+    /* reduce width ratio from 0.8 → 0.6 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    /* remove unnecessary inner spacing */
+    position: relative;
+}
+
+.saint-img img {
+    position: relative;
+    width: 95%;
+    /* fill more horizontally */
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+}
+
+/* 🔹 Edit button */
+.edit-btn {
+    width: 25px;
+    height: 25px;
+    background: url('../../asset/EditIcon.png') no-repeat center center;
+    background-size: contain;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.edit-btn:hover {
+    transform: scale(1.1);
+}
+
+/* 🔹 Details List */
+.detail-row {
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: #000;
+}
+
+.detail-row strong {
+    font-weight: bold;
+    margin-right: 5px;
+    /* ensure label and colon stay close, value separated by space */
+}
+
+/* =========================================
+   UPDATE EVENT MODAL STYLING
+   ========================================= */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    /* 5% from top and centered */
+    padding: 30px;
+    border-radius: 15px;
+    /* Rounded corners */
+    width: 80%;
+    max-width: 900px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    font-family: 'Poppins', sans-serif;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #000;
+}
+
+.close-modal {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-modal:hover,
+.close-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-title-display {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+/* Modal Grid Layout */
+.modal-grid-layout {
+    display: flex;
+    gap: 40px;
+}
+
+.modal-left-col {
+    flex: 1.5;
+    /* Takes up more space */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.modal-right-col {
+    flex: 1;
+    /* Description takes less space */
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-right-col textarea {
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    border: 1px solid #000;
+    resize: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+}
+
+/* Form Group & Input Styling */
+.form-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    /* Added spacing between rows */
+}
+
+.form-group label {
+    font-weight: 700;
+    /* Bold labels as requested */
+    white-space: nowrap;
+    min-width: 30px;
+    font-size: 14px;
+    /* Slightly smaller to fit better */
+    display: flex;
+    align-items: center;
+    color: #333;
+}
+
+.form-group label i {
+    font-size: 18px;
+    color: #333;
+    margin-right: 8px;
+    /* Space between icon and text */
+}
+
+/* Underline Inputs */
+.modal-left-col input[type="text"],
+.modal-left-col input[type="date"],
+.modal-left-col input[type="time"] {
+    flex: 1;
+    /* Fixes overlap: takes remaining space instead of forcing 100% */
+    padding: 8px 5px;
+    border: none;
+    border-bottom: 2px solid #000;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+    font-family: 'Poppins', sans-serif;
+    min-width: 0;
+    /* Prevents flexbox overflow issues */
+}
+
+/* Form Row for side-by-side inputs (Date, Time) */
+.form-row {
+    display: flex;
+    gap: 20px;
+    /* Reduced gap slightly */
+    width: 100%;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.modal-right-col label {
+    font-weight: 700;
+    /* Bold label for Description */
+    margin-bottom: 10px;
+    display: block;
+    color: #333;
+}
+
+/* Placeholder styling override if needed */
+::placeholder {
+    color: #999;
+}
+
+/* Buttons */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.btn-cancel {
+    background-color: white;
+    color: #FF0000;
+    border: 2px solid #FF0000;
+    padding: 10px 40px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.btn-cancel:hover {
+    background-color: #FF0000;
+    color: white;
+}
+
+.btn-save {
+    background-color: white;
+    color: #008000;
+    /* Green */
+    border: 2px solid #008000;
+    padding: 10px 40px;
+    border-radius: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.btn-save:hover {
+    background-color: #008000;
+    color: white;
+}
+
+/* 🔹 Back Button (Green Outline) */
+.Back-event {
+    background-color: #fff;
+    color: #28a745;
+    border: 1px solid #28a745;
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.Back-event:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+/* 📱 Mobile & Tablet Responsive Design */
+@media (max-width: 1024px) {
+    .main-banner {
+        width: 90%;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .sub-banner {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .saint-img {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .saint-img img {
+        width: 60%;
+        max-width: 300px;
+        height: auto;
+    }
+
+    .top-left {
+        flex-direction: column;
+        text-align: center;
+        margin-left: 0;
+    }
+}

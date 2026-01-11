@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Announcement</title>
+    <link rel="stylesheet" href="css/CreateAnnouncement.css">
+</head>
+
+<body>
+    <div class="top-left">
+        <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left" />
+        <div class="top-left-text">
+            <div class="top-text">SAA Reunite!</div>
+            <div class="sub-text">Mondragon N. Samar</div>
+        </div>
+    </div>
+
+    <div class="Main-container">
+        <div class="container-header">Post New Announcement</div>
+        <h1>Hello, Officer!</h1>
+        <p>Got something important to share? Post updates, reminders, or announcements here and keep our alumni
+            community informed and connected.</p>
+
+        <form class="form-section">
+            <label for="title">Announcement Title</label>
+            <input type="text" id="title" class="Announcement-title" placeholder="Enter announcement title">
+
+            <div class="date-time-group">
+                <div class="input-group">
+                    <label for="date">Date Posted</label>
+                    <input type="date" id="date" class="Date-posted">
+                </div>
+
+                <div class="input-group">
+                    <label for="time">Time</label>
+                    <input type="time" id="time" class="Time">
+                </div>
+            </div>
+
+            <label for="category">Category / Tag</label>
+            <select id="category" class="Category">
+                <option value="" disabled selected>Select Category</option>
+                <option value="Fundraising Event">Fundraising Event</option>
+                <option value="Grand Reunion">Grand Reunion</option>
+            </select>
+
+            <label for="message">Message</label>
+            <textarea id="message" class="Message" placeholder="Write your message here..."></textarea>
+
+            <div class="bell-and-buttons">
+                <div class="bell-image"></div>
+                <div class="button-group">
+                    <button type="button" class="cancelbtn">Cancel</button>
+                    <button type="button" class="Post-announcementbtn">Post Announcement</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/CreateAnnouncement.js"></script>
+</body>
+
+</html>

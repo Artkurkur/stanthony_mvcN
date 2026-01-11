@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sponsorship and Donation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/SponsorDonation.css">
+</head>
+
+<body>
+
+    <div class="donation-container">
+        <div class="header-card">
+            <button class="close-btn" aria-label="Close form">&times;</button>
+
+            <div class="header">
+                <div class="header-logo">
+                    <img src="../asset/SponsorDonation/MainLogo.png" alt="Sponsorship Logo">
+                </div>
+                <div>
+                    <h1>Sponsorship and Donation</h1>
+                    <p>Your donations help bring alumni together, fund community projects, and create opportunities for
+                        the next generation.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW: Transaction Selection Component -->
+        <div class="transaction-selection-container" id="selection-view">
+            <h2 class="selection-title">Select Transaction</h2>
+            <div class="selection-cards">
+                <div class="selection-card donation-card" id="btn-donation">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-heart"></i>
+                        <i class="fas fa-hand-holding-heart overlay-icon"></i>
+                    </div>
+                    <h3>Donation</h3>
+                </div>
+                <div class="selection-card sponsorship-card" id="btn-sponsorship">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Sponsorship</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-wrapper" id="main-content" style="display: none;">
+            <div class="form-panel">
+
+                <!-- Add dropdown here -->
+
+                <form id="donation-form">
+
+                    <div class="input-group">
+                        <label for="user-type">User Type :</label>
+                        <select id="user-type" name="user_type" required>
+                            <option value="Alumni">Alumni Member</option>
+                            <option value="Non-User">Non-User</option>
+                        </select>
+                    </div>
+
+                    <!-- Alumni Fields -->
+                    <div id="alumni-fields">
+                        <div class="input-group">
+                            <label for="fname">First Name :</label>
+                            <input type="text" id="fname" name="fname">
+                        </div>
+                        <div class="input-group">
+                            <label for="lname">Last Name :</label>
+                            <input type="text" id="lname" name="lname">
+                        </div>
+                        <div class="input-group">
+                            <label for="batch-year">Batch / Year :</label>
+                            <select id="batch-year" name="batch_year">
+                                <option value="" disabled selected>Select Batch/Year</option>
+                                <option value="2005">2005</option>
+                                <option value="2020">2020</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label for="mobile-number">Mobile Number :</label>
+                            <input type="tel" id="mobile-number" name="mobile_number">
+                        </div>
+                    </div>
+
+                    <!-- Non-User Fields (Hidden by default) -->
+                    <div id="non-user-fields" style="display: none;">
+                        <div class="input-group">
+                            <label for="full-name">Full Name :</label>
+                            <input type="text" id="full-name" name="name">
+                        </div>
+                    </div>
+
+                    <div class="input-group custom-select-container">
+                        <label for="donation-type-input"></label>
+
+                        <input type="hidden" id="donation-type-input" name="Donation Type" required>
+
+                        <button type="button" class="dropdown-button custom-select-button" id="donationTypeDropdownBtn">
+                            <span id="selectedDonationTypeText">Select Type of Fundraising</span>
+                            <i class="fas fa-chevron-down dropdown-arrow"></i>
+                        </button>
+
+                        <ul class="fundraising-menu dropdown-content donation-type-menu" id="donationTypeDropdown">
+
+                        </ul>
+                    </div>
+
+                    <!-- Event Selection Container (Hidden by default) -->
+                    <input type="hidden" id="selected-event-id" name="event_id">
+                    <div id="event-selection-container" style="display: none; margin-bottom: 15px;">
+                        <label style="font-size: 12px; font-weight: 500; margin-bottom: 5px; display: block;">Select an
+                            Event :</label>
+                        <div class="events-list-wrapper">
+                            <ul class="events-list-scrollable" id="events-list">
+                                <!-- Dynamic Events -->
+                                <li style="padding: 10px; color: #777;">Loading events...</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="payment-method">Payment Method :</label>
+                        <select id="payment-method" name="payment_method" required>
+                            <option value="" disabled selected>Loading...</option>
+                        </select>
+                    </div>
+
+                    <!-- GCash QR Code Container (Hidden by default) -->
+                    <div id="gcash-qr-container" style="display: none; text-align: center; margin-bottom: 20px;">
+                        <p style="margin-bottom: 10px; font-weight: bold;">Scan to Pay via GCash</p>
+                        <img src="../asset/GCash.jpg" alt="GCash QR Code"
+                            style="width: 200px; height: auto; border: 1px solid #ddd; border-radius: 10px;">
+                    </div>
+
+                    <div class="input-group" id="donation-amount-group">
+                        <label for="donation-amount">Donation Amount :</label>
+                        <input type="text" id="donation-amount" name="Donation Amount" inputmode="numeric" required
+                            placeholder="e.g., 5,000">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="date-of-donation">Date of Donation :</label>
+                        <input type="date" id="date-of-donation" name="Date of Donation" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="dedication">Dedication (optional) :</label>
+                        <input type="text" id="dedication" name="Dedication">
+                    </div>
+
+                    <button type="submit" class="generate-receipt-btn">GENERATE RECEIPT</button>
+                    <!-- Add Back Button here -->
+                    <button type="button" id="back-to-selection-btn" class="back-link-btn"
+                        style="margin-top: 10px; background: none; border: none; color: #777; cursor: pointer; text-decoration: underline;">&lt;
+                        Back to Selection</button>
+                </form>
+            </div>
+
+            <div class="donation-board-panel">
+                <div class="fundraising-dropdown-container">
+                    <button class="dropdown-button" id="fundraisingDropdownBtn">
+                        <span id="selectedFundText">All Fundraising</span> <i
+                            class="fas fa-chevron-down dropdown-arrow"></i>
+                    </button>
+
+                    <ul class="fundraising-menu dropdown-content" id="fundraisingDropdown">
+
+                        <li data-fund="Alumni Grand Reunion" class="fund-item">
+                            <img src="../asset/SponsorDonation/AlumniIcon.png" alt="Alumni Icon"> Alumni Grand Reunion
+                        </li>
+                        <li data-fund="Outreach Program" class="fund-item">
+                            <img src="../asset/SponsorDonation/Outreach.png" alt="Outreach Icon"> Outreach Program
+                        </li>
+                        <li data-fund="Scholarship Program" class="fund-item">
+                            <img src="../asset/SponsorDonation/Scholar.png" alt="Scholarship Icon"> Scholarship
+                            Program
+                        </li>
+                        <li data-fund="General Fund" class="fund-item">
+                            <img src="../asset/SponsorDonation/GenFund.png" alt="General Fund Icon"> General
+                            Fund
+                        </li>
+                        <li data-fund="Infrastructure Fund" class="fund-item">
+                            <img src="../asset/SponsorDonation/Infras.png" alt="Infrastructure Icon">
+                            Infrastructure
+                            Fund
+                        </li>
+                        <li data-fund="Events" class="fund-item">
+                            <img src="../asset/SponsorDonation/Events.png" alt="Events Icon">
+                            Events
+                        </li>
+                    </ul>
+                </div>
+
+                <h2 id="board-title">General Donation Board</h2>
+                <div class="table-container">
+                    <table class="donation-table">
+                        <thead>
+                            <tr>
+                                <th>Donor Name</th>
+                                <th>Batch</th>
+                                <th>Transaction Category</th>
+                                <th>Donation Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donation-list-body">
+                            <!-- Dynamic Content will be loaded here via script.js -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/SponsorDonation.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>SAA Reunite Home</title>
+  <link rel="stylesheet" href="css/mainDashB.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+  <script src="js/mainDashB.js" defer></script>
+</head>
+
+<body>
+  <div class="top-left">
+    <img src="../asset/LogoSAA.png" alt="SAA Logo" class="logo-left">
+    <div class="top-left-text">
+      <div class="top-text">SAA Reunite</div>
+      <div class="sub-text">Mondragon N. Samar</div>
+    </div>
+  </div>
+
+  <div class="header-container">
+    <div class="welcome-statement">
+      <h1>Welcome Anthonian!</h1>
+      <p>Explore upcoming events, connect with alumni, and keep the SAA spirit alive.</p>
+    </div>
+
+    <div class="main-banner">
+      <img src="../asset/AcademyLogo.png" alt="Academy Logo" class="academy-logo">
+
+      <div class="academy-info">
+        <h1>St. Anthony Academy - Alumni Association</h1>
+        <p>
+          Logged in as: <strong id="userName">Loading...</strong>
+          (<span id="userRole">Loading...</span>)
+          <span class="status-indicator"></span>
+        </p>
+
+        <button class="logout-btn" id="logoutBtn">Log Out</button>
+        <button class="profile-btn" onclick="window.location.href='profilePg.html'">Profile</button>
+      </div>
+
+      <img src="../asset/St.AnthonyMD.png" alt="Saint Anthony" class="saint-image">
+    </div>
+  </div>
+
+  <!-- Start of Dashboard Section -->
+  <div class="dashboard-body">
+
+    <!-- Info Cards Row -->
+    <h2 class="section-title">Dashboard Modules</h2>
+    <p class="section-subtitle">Quick access to your alumni tools and updates</p>
+
+    <div class="category-container">
+      <div class="category-card">
+        <img src="../asset/UpcomingEvent.png" alt="Event Icon">
+        <div class="card-text">
+          <strong>Reconnect with your fellow alumni</strong>
+          <button class="green-btn" onclick="window.location.href='Events.html'">EVENTS</button>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="../asset/LtestAnnounceLogo.png" alt="Announcement Icon">
+        <div class="card-text">
+          <strong>Stay updated with the latest alumni news</strong>
+          <button class="pink-btn" onclick="window.location.href='Announcements.html'">ANNOUNCEMENTS</button>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="../asset/Donation.png" alt="Donation Icon">
+        <div class="card-text">
+          <strong>Support our cause and contribute to alumni programs</strong>
+          <button class="yellow-btn" onclick="window.location.href='SponsorDonation.html'">FUNDRAISING</button>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="../asset/Report_icon.png" alt="Reports Icon">
+        <div class="card-text">
+          <strong>Stay informed with clear reports</strong>
+          <button class="blue-btn" onclick="window.location.href='Reports.html'">REPORTS</button>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="../asset/Acc_management.png" alt="Account Icon">
+        <div class="card-text">
+          <strong>Manage your account with ease</strong>
+          <button class="green-btn" onclick="window.location.href='AccManagement.html'">ACCOUNT MANAGEMNT</button>
+        </div>
+      </div>
+
+      <div class="category-card">
+        <img src="../asset/RSVP_icon.png" alt="RSVP Icon">
+        <div class="card-text">
+          <strong>Confirm your spot and track attendance</strong>
+          <button class="purple-btn" onclick="window.location.href='Rsvp.html'">RSVP</button>
+        </div>
+      </div>
+
+      <div class="category-card notification-card">
+        <img src="../asset/Notification_icon.png" alt="Notification Icon">
+        <div class="card-text">
+          <strong>Stay notified about alumni updates</strong>
+          <button class="orange-btn" onclick="window.location.href='Notification.html'">NOTIFICATION</button>
+        </div>
+      </div>
+
+      <div class="category-card logs-card">
+        <img src="../asset/LogsIcon.png" alt="Logs Icon">
+        <div class="card-text">
+          <strong>Track Logs</strong>
+          <button class="orange-btn" onclick="window.location.href='Logs.html'">LOGS</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="main-footer">
+    <p>&copy; 2025 SAA Reunite. All Rights Reserved.</p>
+  </footer>
+</body>
+
+</html>

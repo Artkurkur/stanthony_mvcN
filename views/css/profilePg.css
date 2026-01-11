@@ -1,0 +1,333 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f1eded;
+}
+
+/* Use a pseudo-element for blur effect */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../../asset/bannerFlags.png') no-repeat top center;
+  background-size: cover;
+  filter: blur(2px);
+  /* 🔹 adjust blur strength (e.g., 4px–10px) */
+  z-index: -1;
+  /* keep it behind content */
+  opacity: 0.6;
+  /* optional: makes it subtle */
+}
+
+.header-container {
+  width: 100%;
+  max-width: 1500px;
+  margin: 5px auto;
+  background: transparent;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.top-left {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  margin-left: -10px;
+}
+
+.logo-left {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.top-left-text .top-text {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.top-left-text .sub-text {
+  font-size: 13px;
+  color: #666;
+}
+
+/* ============= MAIN VIEW ============= */
+.main-banner {
+  background: #f1eded;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 800px;
+  align-items: center;
+  border-radius: 30px;
+  border: 1px solid #000;
+  padding: 40px 20px;
+  overflow: hidden;
+}
+
+.main-banner::after {
+  content: "";
+  position: absolute;
+  bottom: -400px;
+  right: -330px;
+  width: 1000px;
+  height: 1000px;
+  background: url('../../asset/LogoSAA.png') no-repeat;
+  background-size: contain;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.main-banner .profile-logo {
+  width: 230px;
+  height: 230px;
+  margin-bottom: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #000000;
+}
+
+.profile-form {
+  margin-top: 10px;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.profile-form label {
+  display: block;
+  margin: 10px 0 5px;
+  font-weight: bold;
+}
+
+.profile-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  box-shadow: 0 0 5px #28312c, 0 0 10px #313332;
+  box-sizing: border-box;
+}
+
+.profile-form input:hover {
+  border: 1.5px solid #629ecf;
+}
+
+.profile-form input[readonly] {
+  background: #f5f5f5;
+}
+
+.profile-form button {
+  align-self: center;
+  width: 200px;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #16b93c;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.profile-form button:hover {
+  background: #03ee79fb;
+  color: #000;
+  box-shadow: 0 0 20px #3f9c66, 0 0 40px #274433;
+}
+
+/* ============= EDIT MODE ============= */
+.edit-mode {
+  display: none;
+  background: #f1eded;
+  position: relative;
+  min-height: 800px;
+  border-radius: 30px;
+  border: 1px solid #000;
+  padding: 40px;
+  overflow: hidden;
+}
+
+.edit-mode::after {
+  content: "";
+  position: absolute;
+  bottom: -400px;
+  right: -330px;
+  width: 1000px;
+  height: 1000px;
+  background: url('../../asset/LogoSAA.png') no-repeat;
+  background-size: contain;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.edit-mode h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  z-index: 1;
+  position: relative;
+}
+
+.edit-mode form {
+  max-width: 800px;
+  margin: 0 auto;
+  z-index: 1;
+  position: relative;
+}
+
+.edit-mode .profile-logo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #000000;
+  display: block;
+  margin: 0 auto 20px;
+}
+
+.edit-mode #changePictureBtn {
+  display: block;
+  margin: 0 auto 30px;
+  padding: 10px 25px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.edit-mode #changePictureBtn:hover {
+  background: #1f7be4fb;
+  color: #000;
+  box-shadow: 0 0 10px #4081be, 0 0 20px #4d60a0;
+}
+
+.edit-mode #profilePictureInput {
+  display: none;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #cccccc;
+  border-radius: 10px;
+  box-shadow: 0 0 5px #28312c, 0 0 10px #313332;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-group input:hover:not([readonly]) {
+  border: 1.5px solid #629ecf;
+}
+
+.form-group input[readonly] {
+  background: #f5f5f5;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 12px 40px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.btn-save {
+  background: #16b93c;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background: #03ee79fb;
+  color: #000;
+  box-shadow: 0 0 20px #3f9c66, 0 0 40px #274433;
+}
+
+.btn-cancel {
+  background: #dc3545;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background: #ff4757;
+  color: #000;
+  box-shadow: 0 0 20px #e74c3c, 0 0 40px #c0392b;
+}
+
+/* ============= MESSAGES ============= */
+.message {
+  display: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+#error-message {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+#success-message {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+/* ============= RESPONSIVE ============= */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .edit-mode {
+    padding: 20px;
+  }
+
+  .main-banner {
+    padding: 30px 15px;
+  }
+
+  .profile-form {
+    max-width: 100%;
+  }
+}

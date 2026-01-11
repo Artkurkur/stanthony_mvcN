@@ -1,0 +1,367 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    position: relative;
+    color: #222;
+    background: #fff;
+    padding: 40px;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../../asset/bannerFlags.png') no-repeat top center;
+    background-size: cover;
+    filter: blur(3px);
+    opacity: 0.6;
+    z-index: -1;
+}
+
+/* Header section */
+.top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 30px;
+}
+
+.logo-left {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.top-left-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.top-text {
+    font-size: 1.6rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.sub-text {
+    font-size: 1rem;
+    color: #515253;
+}
+
+/* Main container */
+.Main-container {
+    width: 90%;
+    margin: 50px auto;
+    background: #f6f6f6;
+    border: 3px solid #000;
+    border-radius: 30px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    position: relative;
+    max-width: 1400px;
+    /* Prevent it from getting too wide on huge screens */
+}
+
+.Main-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+/* Search + Add */
+.Announcements-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    border: 2px solid #333;
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 5px 10px;
+}
+
+.Search {
+    background: #f6f6f6;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 1rem;
+}
+
+.Search-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.Create-announcement {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #000;
+    background: #fff;
+    border: 3px solid #000;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s;
+    position: absolute;
+    top: 35px;
+    /* Aligned with title */
+    right: 50px;
+    /* Fixed distance from right edge */
+    z-index: 5;
+}
+
+.Create-announcement:hover {
+    background-color: #bbbbbb;
+}
+
+/* Wrapper for announcements and megaphone */
+.Announcement-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    gap: 20px;
+}
+
+/* Grid container (vertical stack) */
+.Announcement-grid {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Individual boxes */
+.Grid-box {
+    background: #fff;
+    border-radius: 20px;
+    padding: 0 20px 20px 20px;
+    overflow-y: auto;
+    max-height: 500px;
+    border: 2px solid #ddd;
+    position: relative;
+}
+
+.grid-header {
+    background: #fff;
+    border-radius: 0 0 5px;
+    position: sticky;
+    font-weight: bold;
+    top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    padding: 10px 0;
+    border-bottom: 2px solid #ccc;
+    z-index: 5;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Announcement cards */
+.announcement-card {
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background: #fafafa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.announcement-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.details-btn {
+    background-color: #7e868f;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.details-btn:hover {
+    background-color: #0056b3;
+}
+
+.announcement-content {
+    flex-grow: 1;
+}
+
+.announcement-content p {
+    margin: 2px 0;
+    line-height: 1.3;
+}
+
+.announcement-actions {
+    margin-left: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* Megaphone */
+.megaphone {
+    flex-shrink: 0;
+    position: relative;
+    align-self: center;
+    margin-right: 10px;
+    margin-bottom: -295px;
+}
+
+.megaphone img {
+    width: 300px;
+    height: auto;
+}
+
+/* ===========================
+   📱 RESPONSIVE DESIGN
+   =========================== */
+
+/* For tablets and smaller laptops */
+/* For mobile screens (portrait) */
+@media (max-width: 768px) {
+    body {
+        padding: 20px;
+    }
+
+    .top-left {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0;
+    }
+
+    .logo-left {
+        width: 60px;
+        height: 60px;
+    }
+
+    .top-text {
+        font-size: 1.3rem;
+    }
+
+    .sub-text {
+        font-size: 0.9rem;
+    }
+
+    .Main-container {
+        width: 100%;
+        margin: 30px auto;
+        border-radius: 20px;
+        padding: 20px;
+        position: relative;
+    }
+
+    .Announcements-label {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .search-form {
+        width: 100%;
+    }
+
+    .Announcement-wrapper {
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .Announcement-grid {
+        width: 100%;
+        position: relative;
+    }
+
+    .Grid-box {
+        position: relative;
+        width: 100%;
+        max-height: 350px;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 2px solid #ddd;
+        border-radius: 15px;
+        background: #fff;
+    }
+
+    .grid-header {
+        top: 0;
+        /* stick to the top inside Grid-box */
+        background: #fff;
+    }
+
+    .megaphone {
+        display: flex;
+        justify-content: center;
+        margin: 0 auto 10px;
+        margin-bottom: -20px;
+    }
+
+    .megaphone img {
+        width: 180px;
+    }
+
+    /* ✅ stays on top of the New Post box, does not float on scroll */
+    .Create-announcement {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+        background: #fff;
+        z-index: 10;
+    }
+}
+
+
+/* For very small phones */
+@media (max-width: 480px) {
+    .Main-container h1 {
+        font-size: 1.4rem;
+    }
+
+    .announcement-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .announcement-actions {
+        align-self: flex-end;
+    }
+
+    .Create-announcement {
+        width: 50px;
+        height: 50px;
+        font-size: 2.2rem;
+    }
+
+    .megaphone img {
+        width: 150px;
+    }
+}

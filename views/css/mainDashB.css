@@ -1,0 +1,348 @@
+* {
+  margin-top: 20px;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+  background: #f1eded;
+  color: #222;
+  padding-bottom: 70px;
+}
+
+/* ===== HEADER CONTAINER ===== */
+.header-container {
+  border: 2px solid black;
+  width: calc(100% - 60px);
+  /* reduces total width by 30px on each side */
+  background: #e9e3e3;
+  border-radius: 25px;
+  color: rgb(66, 56, 56);
+  padding: 20px 30px 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
+}
+
+/* ===== TOP LEFT (Logo + Title) ===== */
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: -40px;
+}
+
+.logo-left {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.top-left-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.top-text {
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.sub-text {
+  font-size: 1rem;
+  color: #515253;
+  margin-top: 5px;
+  margin-bottom: 20px
+}
+
+/* ===== WELCOME STATEMENT ===== */
+.welcome-statement {
+  text-align: center;
+  margin: 25px auto 35px;
+  margin-top: 10px;
+}
+
+.welcome-statement h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  font-family: 'Playfair Display', serif;
+}
+
+.welcome-statement p {
+  font-size: 1rem;
+  color: #515253;
+}
+
+/* ===== MAIN BANNER ===== */
+.main-banner {
+  position: relative;
+  border: solid 2px white;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 30px 40px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 5px 5px 5px rgba(33, 201, 201, 0.658);
+  overflow: hidden;
+  /* prevent background overflow */
+}
+
+/* 🔹 Blurred background image inside main-banner */
+.main-banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('../../asset/bannerFlags.png') no-repeat top center;
+  background-size: cover;
+  filter: blur(4px);
+  /* adjust blur intensity */
+  opacity: 0.4;
+  /* control brightness */
+  z-index: 0;
+  /* keep it behind content */
+  border-radius: 30px;
+}
+
+/* 🔹 Ensure banner text & icons stay above blur */
+.main-banner * {
+  position: relative;
+  z-index: 1;
+}
+
+.academy-logo {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+}
+
+.academy-info {
+  flex: 1;
+  color: rgb(0, 0, 0);
+}
+
+.academy-info h1 {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.academy-info p {
+  margin-top: 8px;
+  font-size: 0.95rem;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: limegreen;
+  border-radius: 50%;
+  margin-left: 5px;
+}
+
+/* ===== BUTTONS ===== */
+.logout-btn,
+.profile-btn {
+  background-color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-right: 10px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+.profile-btn:hover {
+  background-color: #2196f3;
+  color: white;
+}
+
+/* ===== SAINT IMAGE (FLOATING OVER HEADER) ===== */
+.saint-image {
+  position: absolute;
+  right: 20px;
+  bottom: 0px;
+  width: 160px;
+  height: auto;
+  object-fit: contain;
+  z-index: 2;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+
+/* ===== DASHBOARD BODY ===== */
+.dashboard-body {
+  margin-top: 30px;
+  padding: 40px 60px;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0d47a1;
+  text-align: center;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: #444;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+/* ===== CATEGORY CONTAINER ===== */
+.category-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  justify-content: center;
+}
+
+/* ===== CATEGORY CARD ===== */
+.category-card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+  transform: translateY(-9px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.category-card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 15px;
+  object-fit: contain;
+}
+
+.card-text strong {
+  display: block;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+/* ===== BUTTON COLORS ===== */
+button.green-btn {
+  background: #43a047;
+  color: white;
+  box-shadow: 0 8px 18px rgba(3, 243, 103, 0.507);
+}
+
+button.pink-btn {
+  background: #ec407a;
+  color: white;
+  box-shadow: 0 8px 18px rgba(245, 59, 136, 0.61);
+}
+
+button.yellow-btn {
+  background: #fbc02d;
+  color: white;
+  box-shadow: 0 8px 18px rgba(255, 219, 58, 0.63);
+}
+
+button.blue-btn {
+  background: #1e88e5;
+  color: white;
+  box-shadow: 0 8px 18px rgba(52, 181, 255, 0.623);
+}
+
+button.purple-btn {
+  background: #8e24aa;
+  color: white;
+  box-shadow: 0 8px 18px rgba(250, 28, 250, 0.534);
+}
+
+button.orange-btn {
+  background: #fb8c00;
+  color: white;
+  box-shadow: 0 8px 18px rgba(252, 179, 45, 0.596);
+}
+
+.category-card button {
+  border: none;
+  border-radius: 25px;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.category-card button:hover {
+  opacity: 0.85;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+}
+
+.main-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #222;
+  /* Dark footer background */
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  border-top: 2px solid #000;
+  /* Optional border line */
+  z-index: 1000;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 900px) {
+  .main-banner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .saint-image {
+    position: static;
+    width: 120px;
+    margin-top: 15px;
+  }
+
+  .dashboard-body {
+    padding: 25px 20px;
+  }
+}
+
+@media (max-width: 500px) {
+  .top-text {
+    font-size: 1.3rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .category-card {
+    padding: 15px;
+  }
+}

@@ -1,0 +1,666 @@
+/* =========================================
+   1. RESET & BASICS
+   ========================================= */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+body {
+    background: #f1eded;
+    color: #1f2937;
+    /* gray-800 */
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.625;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* =========================================
+   2. LAYOUT CONTAINERS
+   ========================================= */
+.main-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    /* p-8 */
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    /* Page State Logic handled by .page class below */
+}
+
+@media (min-width: 768px) {
+    .page-container {
+        padding: 3rem;
+        /* md:p-12 */
+    }
+}
+
+.page {
+    visibility: hidden;
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 0.3s ease, visibility 0.3s;
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+}
+
+.page.active {
+    visibility: visible;
+    opacity: 1;
+    z-index: 10;
+    pointer-events: auto;
+}
+
+.content-scroll-area {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    width: 100%;
+    position: relative;
+    padding-right: 0.5rem;
+    /* pr-2 */
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* gap-6 */
+}
+
+/* =========================================
+   3. HEADERS & LOGOS
+   ========================================= */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    /* mb-6 */
+    flex-shrink: 0;
+    z-index: 10;
+}
+
+.header-left-group {
+    display: flex;
+    gap: 1.5rem;
+    /* gap-6 */
+    align-items: center;
+}
+
+.logo-container {
+    width: 90px;
+    height: 90px;
+    border-radius: 9999px;
+    /* rounded-full */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 0.25rem;
+    /* p-1 */
+}
+
+.header-text-group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.close-btn {
+    color: #9ca3af;
+    /* gray-400 */
+    font-size: 3.75rem;
+    /* text-6xl */
+    line-height: 1;
+    font-weight: 300;
+    /* font-light */
+    padding: 1rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: color 0.2s;
+}
+
+.close-btn:hover {
+    color: black;
+}
+
+
+
+.header-title-main {
+    font-size: 3rem;
+    /* text-5xl */
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: #000;
+    line-height: 1;
+}
+
+
+
+/* =========================================
+   4. DASHBOARD: ANNOUNCEMENT LIST
+   ========================================= */
+.announcement-list-box {
+    border: 1.5px solid black;
+    border-radius: 25px;
+    padding: 1.5rem;
+    /* p-6 */
+    background-color: white;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+}
+
+.announcement-items-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    /* gap-5 */
+    width: 100%;
+}
+
+/* =========================================
+   5. DETAIL PAGE: CARDS
+   ========================================= */
+.card-details-top {
+    background-color: white;
+    border: 2px solid #f3f4f6;
+    /* gray-100 */
+    border-radius: 25px;
+    padding: 2rem;
+    /* p-8 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    flex-shrink: 0;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    min-height: min-content;
+}
+
+.card-details-glow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(to right, transparent, #8888ff, transparent);
+    opacity: 0.5;
+}
+
+/* CARD IN READY TO CONNECT ADJUSTMENT*/
+.card-form-bottom {
+    background-color: white;
+    border: 4px solid #e5e7eb;
+    /* gray-200 */
+    border-radius: 30px;
+    padding: 2rem;
+    /* p-8 */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    /* shadow-sm */
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 600px;
+}
+
+@media (min-width: 1024px) {
+    .card-form-bottom {
+        padding: 2.5rem;
+        /* lg:p-10 */
+    }
+}
+
+.form-title {
+    font-size: 1.875rem;
+    /* text-3xl */
+    font-weight: 700;
+    color: black;
+    margin-bottom: 0.5rem;
+}
+
+.form-description {
+    font-size: 1.125rem;
+    /* text-lg */
+    color: #4b5563;
+    /* gray-600 */
+    margin-bottom: 2rem;
+    line-height: 1.625;
+}
+
+/* =========================================
+   6. FORM ELEMENTS
+   ========================================= */
+.rsvp-form-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    /* gap-8 */
+    flex: 1;
+}
+
+.form-row-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+@media (min-width: 1280px) {
+
+    /* xl */
+    .form-row-top {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.form-group-event {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.form-label {
+    font-size: 1.125rem;
+    /* text-lg */
+    font-weight: 700;
+    color: black;
+    white-space: nowrap;
+}
+
+.form-value-display {
+    font-size: 1.125rem;
+    /* text-lg */
+    font-weight: 500;
+    color: #374151;
+    /* gray-700 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.form-group-remarks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 60%;
+    flex: 1;
+    min-height: 150px;
+
+}
+
+/*REMARKS TEXTAREA AND CONTAINER ADJUSTMENTS*/
+.form-textarea {
+    width: 100%;
+    height: 60%;
+    padding: 1.5rem;
+    /* p-6 */
+    border: 2px solid #e5e7eb;
+    /* gray-200 */
+    border-radius: 20px;
+    font-size: 1.125rem;
+    /* text-lg */
+    outline: none;
+    resize: none;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    /* shadow-sm */
+    transition: all 0.2s;
+}
+
+.form-textarea:focus {
+    border-color: #3b3bff;
+    /* primary */
+}
+
+.form-textarea::placeholder {
+    color: #9ca3af;
+}
+
+.form-group-response {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+@media (min-width: 1280px) {
+    .form-group-response {
+        width: auto;
+    }
+}
+
+/* Custom Select */
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+@media (min-width: 1280px) {
+    .custom-select-wrapper {
+        width: 250px;
+    }
+}
+
+.custom-select-wrapper::after {
+    content: "▼";
+    font-size: 0.7rem;
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    pointer-events: none;
+}
+
+.select-input {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    /* px-6 py-3 */
+    background-color: #3b3bff;
+    color: white;
+    font-weight: 700;
+    border-radius: 12px;
+    font-size: 1rem;
+    appearance: none;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    text-align: left;
+    padding-left: 1.5rem;
+    letter-spacing: 0.025em;
+    box-shadow: 0 10px 15px -3px rgba(59, 59, 255, 0.5);
+    /* shadow-blue-200ish */
+    transition: background-color 0.2s;
+}
+
+.select-input:hover {
+    opacity: 0.9;
+}
+
+/* Buttons */
+.form-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.25rem;
+    margin-top: -280px;
+    padding-top: 1rem;
+    border-top: 1px solid #f9fafb;
+    /* gray-50 */
+    flex-shrink: 0;
+}
+
+.btn-base {
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    /* text-sm */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    border-width: 2px;
+    padding-top: 0.875rem;
+    /* pt-3.5 */
+}
+
+
+/*CANCEL BUTTON ADJUSTMENT*/
+.btn-cancel {
+    background-color: white;
+    border-color: black;
+    color: black;
+    width: 200px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.btn-cancel:hover {
+    background-color: #fe4242;
+    border-color: black;
+    color: #e5e7eb;
+}
+
+
+
+.btn-submit {
+    background-color: #3b3bff;
+    border-color: #3b3bff;
+    color: white;
+    width: 200px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.btn-submit:hover {
+    background-color: #0ae544;
+    border-color: #2525e0;
+}
+
+/* =========================================
+   7. TEXT ADJUSTMENT FOR VIEW DETAILS DATA (Used in JS)
+   ========================================= */
+
+/*Batch 2016 Grand Reunion Announcement Text*/
+.detail-title {
+    font-size: 24px;
+    /* text-xl */
+    font-weight: 570;
+    color: black;
+    margin-bottom: 0.125rem;
+    line-height: 1.25;
+}
+
+/*Event Announcement | Batch 2016 Adjustment Text*/
+.detail-subtitle {
+    font-size: 19px;
+    color: #6b7280;
+    /* gray-500 */
+    font-weight: 500;
+}
+
+.detail-text-body {
+    font-size: 1rem;
+    /* text-base */
+    color: #1f2937;
+    /* gray-800 */
+    font-weight: 500;
+    line-height: 1.625;
+    margin-bottom: 1.5rem;
+}
+
+/*ADJUSTMENT TEXT */
+/*All Batch 2016 alumni are invited! Let's bring back the memories and strengthen our bond once again. The
+ event will kick off with a welcome cocktail at 5:00 PM, followed by the main program at 6:30 PM. Attire
+  is semi-formal. Contributions for the batch fund are welcome at the registration booth. See you there!*/
+.detail-text-footer {
+    font-size: 20px;
+    /* text-base */
+    color: #4b5563;
+    /* gray-600 */
+    line-height: 1.625;
+}
+
+/*Date ,  Venue ,  Highlight ADJUSTMENT TEXT*/
+.detail-meta-row {
+    font-size: 20px;
+    /* text-base */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/*Bold text for Date ,  Venue ,  Highlight*/
+.detail-meta-label {
+    font-weight: 00;
+    color: black;
+}
+
+.detail-meta-value {
+    color: #374151;
+    /* gray-700 */
+}
+
+/* =========================================
+   8. ANNOUNCEMENT ITEM TYPOGRAPHY (& CARD)
+   ========================================= */
+.announcement-card {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    /* gray-200 */
+    border-radius: 15px;
+    padding: 1rem;
+    /* p-4 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(85, 85, 255, 0.1);
+    /* Custom glow base */
+    transform: translateY(0);
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 168px) {
+    .announcement-card {
+        flex-direction: row;
+    }
+}
+
+/*ANNOUNCEMENT EACH SQUARE ADJUSTMENT*/
+.announcement-card:hover {
+    box-shadow: 0 8px 25px -4px rgba(242, 236, 68, 0.926);
+    transform: translateY(-4px);
+}
+
+/*LOGO ICON ADJUSTMENT IN EVERY ANNOUNCEMENT*/
+.announcement-icon-box {
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.announcement-text-group {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .announcement-text-group {
+        text-align: left;
+    }
+}
+
+/* TEXT YOU CAN EDIT */
+.announcement-title {
+    font-size: 20px;
+    /* text-[15px] -> approx 18px now */
+    font-weight: 700;
+    color: black;
+    margin-bottom: 0.125rem;
+    line-height: 1.25;
+}
+
+/*ALL ANNOUNCEMENT TEXT ADJUSTMENT*/
+.announcement-subtitle {
+    font-size: 0.875rem;
+    /* text-[12px] -> approx 14px now */
+    color: #6b7280;
+    /* gray-500 */
+    font-weight: 600;
+}
+
+/*ANNOUNCMENT VEIW DETAILS BUTTON ADJSUTMENT*/
+.announcement-view-btn {
+    padding: 0.5rem 1.5rem;
+    color: black;
+    font-weight: 600;
+    font-size: 0.875rem;
+    /* text-sm */
+    white-space: nowrap;
+    transition: all 0.2s;
+    text-decoration-line: underline;
+    text-decoration-color: #3b3bff;
+    /* primary */
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+}
+
+/*VIEW TEXT ADJSUTMENT*/
+.announcement-view-btn:hover {
+    text-decoration-color: black;
+}
+
+/* RSVP and Attendance management Text Adjustment */
+.section-label {
+    font-size: 19px;
+    /* text-sm */
+    color: rgb(107 114 128);
+    /* text-gray-500 */
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 7px;
+    padding-left: 0.25rem;
+}
+
+.header-subtitle-main {
+    font-size: 25px;
+    /* text-xl */
+    font-weight: 500;
+    color: rgb(55 65 81);
+    /* text-gray-700 */
+    margin-top: 0.25rem;
+}

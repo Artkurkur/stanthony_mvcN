@@ -57,9 +57,13 @@ form.addEventListener("submit", async (e) => {
   const data = getFormData();
 
   try {
+    const token = localStorage.getItem("token");
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
       body: JSON.stringify(data),
     });
 
@@ -132,9 +136,13 @@ async function editAlumni(id) {
       // ✅ Password is NOT included - backend will preserve existing password
 
       try {
+        const token = localStorage.getItem("token");
         const response = await fetch(`${API_URL}/${id}`, {
           method: "PUT",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
           body: JSON.stringify(updatedData),
         });
 
@@ -167,7 +175,13 @@ async function deleteAlumni(id) {
   if (!confirm("Are you sure you want to delete this alumni?")) return;
 
   try {
-    const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${API_URL}/${id}`, { 
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
     const result = await response.json();
 
     if (response.ok) {

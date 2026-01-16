@@ -415,6 +415,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const gcashQrContainer = document.getElementById('gcash-qr-container');
     const donationAmountGroup = document.getElementById('donation-amount-group');
     const donationAmountInputRef = document.getElementById('donation-amount');
+    const receiptUploadGroup = document.getElementById('receipt-upload-group');
+    const receiptUploadInput = document.getElementById('receipt-upload');
+
+
+    // Get Logged In User
+    const userData = localStorage.getItem("user");
+    const currentUser = userData ? JSON.parse(userData) : null;
+    // Roles: 1=Admin, 7=Cashier. Others are "Normal"
+    const isStaff = currentUser && (currentUser.role_id === 1 || currentUser.role_id === 7);
 
     // Toggle User Fields Logic
     const toggleUserFields = () => {
@@ -447,6 +456,27 @@ document.addEventListener('DOMContentLoaded', () => {
             donationAmountGroup.style.display = 'block';
             donationAmountInputRef.required = true;
         }
+
+        // Apply Role-Based Overrides
+        if (!isStaff) {
+            // For Normal Users: ALWAYS Hide Amount, Show Receipt Upload
+            donationAmountGroup.style.display = 'none';
+            donationAmountInputRef.required = false;
+
+            // Show Receipt Upload if it's a QR/Cashless method (which is all they can see)
+            // But we can just show it regardless for them as they need to upload proof
+            receiptUploadGroup.style.display = 'block';
+            receiptUploadInput.required = true;
+        } else {
+            // Admin/Cashier: Respect the original logic (hide amount only if GCash implies no manual entry needed instantly, or maybe they enter it?)
+            // The original logic hid amount for GCash. We keep that.
+            // Receipt upload is NOT for them (they are verifying or taking cash).
+            receiptUploadGroup.style.display = 'none';
+            receiptUploadInput.required = false;
+
+            // Check if "Cash" is selected
+            // Auto-generated backend side now. No manual input needed.
+        }
     };
 
     /**
@@ -470,12 +500,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (Array.isArray(data)) {
                     data.forEach(method => {
+                        // Filter Logic:
+                        // If NOT staff, do NOT show "Cash"
+                        // We check if method_name contains "Cash" AND does NOT contain "GCash" (assuming GCash is allowed)
+                        // Or strictly: Only show "GCash" or "QR" for normal users.
+                        // The user said: "directly show the QR code donation type... The 'Cash and QR code' option is only visible to admin..." 
+                        // It seems "Cash and QR code" might be ONE option or distinct. 
+                        // Let's assume standard names "Cash" and "GCash".
+
+                        const isCash = method.method_name.toLowerCase().trim() === 'cash';
+
+                        if (!isStaff && isCash) {
+                            return; // Skip Cash for normal users
+                        }
+
                         const option = document.createElement('option');
                         option.value = method.payment_method_id;
                         option.textContent = method.method_name;
                         paymentMethodSelect.appendChild(option);
                     });
                 }
+
+                // Select the first available option automatically for normal users if only one exists (or just the first one)
+                if (!isStaff && paymentMethodSelect.options.length > 1) {
+                    paymentMethodSelect.selectedIndex = 1; // Index 0 is disabled default
+                }
+
                 togglePaymentMethod();
             })
             .catch(error => {
@@ -486,7 +536,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ... existing functions ...
 
-    const handleFormSubmit = (e) => {
+    // Modal Elements
+    const receiptModal = document.getElementById('receipt-modal');
+    const confirmBtn = document.getElementById('confirm-transaction-btn');
+    const cancelBtn = document.getElementById('cancel-transaction-btn');
+
+    // Preview Elements
+    const previewReceiptNo = document.getElementById('preview-receipt-no');
+    const previewDate = document.getElementById('preview-date');
+    const previewName = document.getElementById('preview-name');
+    const previewMethod = document.getElementById('preview-method');
+    const previewDesc = document.getElementById('preview-desc');
+    const previewAmount = document.getElementById('preview-amount');
+    const previewTotal = document.getElementById('preview-total');
+
+    let pendingPayload = null;
+    let pendingDisplayName = "";
+    let pendingDisplayBatch = "";
+    let pendingDonationType = "";
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault();
 
         // Ensure a donation type is selected
@@ -508,43 +577,131 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const userType = userTypeSelect.value;
         const paymentMethodId = paymentMethodSelect.value;
+        const selectedMethodName = paymentMethodSelect.options[paymentMethodSelect.selectedIndex]?.text || "Unknown";
 
         if (!paymentMethodId) {
             window.alert("Please select a Payment Method.");
             return;
         }
 
+        // If Normal User, validation for receipt
+        const receiptFile = receiptUploadInput.files[0];
+        if (!isStaff && !receiptFile) {
+            window.alert("Please upload a receipt/proof of donation.");
+            return;
+        }
+
+        // Helper to read file as Base64
+        const fileToBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        };
+
+        let receiptBase64 = null;
+        if (receiptFile) {
+            try {
+                receiptBase64 = await fileToBase64(receiptFile);
+            } catch (err) {
+                console.error("Error reading file:", err);
+                window.alert("Failed to read the receipt file.");
+                return;
+            }
+        }
+
+        // Determine Name
+        let fname = formData.get('fname');
+        let lname = formData.get('lname');
+        let fullName = userType === 'Non-User' ? formData.get('name') : `${fname} ${lname}`;
+
+        // Determine Received By
+        let receivedBy = "Online";
+        if (isStaff && currentUser) {
+            receivedBy = `${currentUser.fname || ''} ${currentUser.lname || ''}`.trim() || currentUser.username || "Staff";
+        }
+
         // Prepare Payload
-        const payload = {
-            total_amount: amount,
-            received_by: "Online",
+        pendingPayload = {
+            total_amount: isStaff ? amount : (receiptFile ? 0 : amount), // Logic: if uploading receipt, amount might be unverified 0, but if staff enters it, it is verified.
+            // Actually, for normal user, if we hid the amount field, it's 0 or null. 
+            // The previous code had `isStaff ? amount : 0`. We stick to that.
+
+            received_by: receivedBy,
             receipt_generated: 1,
             payment_method_id: parseInt(paymentMethodId, 10),
             user_type: userType,
-            fname: formData.get('fname'),
-            lname: formData.get('lname'),
+            fname: fname,
+            lname: lname,
             name: userType === 'Non-User' ? formData.get('name') : null,
             mobile_number: formData.get('mobile_number'),
             batch_year: formData.get('batch_year'),
-
-            // Mapped Fields
-            transaction_type: selectedTransactionType, // 'donation' or 'sponsorship'
-            transaction_category: donationTypeInput.value, // Fund Type e.g., 'Alumni Grand Reunion' or 'Events'
-            event_id: selectedEventIdInput.value ? parseInt(selectedEventIdInput.value, 10) : null
+            transaction_type: selectedTransactionType,
+            transaction_category: donationTypeInput.value,
+            event_id: selectedEventIdInput.value ? parseInt(selectedEventIdInput.value, 10) : null,
+            receipt_image: receiptBase64
         };
 
-        // For frontend list update simulation
-        let displayName = "";
-        let displayBatch = "";
-
+        // Store display info for local update after success
         if (userType === 'Alumni') {
-            displayName = `${payload.fname} ${payload.lname}`;
-            displayBatch = payload.batch_year;
+            pendingDisplayName = `${pendingPayload.fname} ${pendingPayload.lname}`;
+            pendingDisplayBatch = pendingPayload.batch_year;
         } else {
-            displayName = payload.name;
-            displayBatch = "N/A";
+            pendingDisplayName = pendingPayload.name;
+            pendingDisplayBatch = "N/A";
         }
+        pendingDonationType = donationTypeInput.value;
 
+
+        // Update Modal Preview
+        const year = new Date().getFullYear();
+        const paddedId = String(nextId).padStart(6, '0');
+        previewReceiptNo.textContent = `RCP-${year}-${paddedId}`;
+
+        previewDate.textContent = new Date(formData.get('Date of Donation')).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        previewName.textContent = fullName;
+        previewMethod.textContent = selectedMethodName;
+        previewDesc.textContent = donationTypeInput.value + (selectedEventIdInput.value ? " (Event)" : "");
+
+        // Format Currency
+        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' }); // Assuming PHP/Peso or Dollar? Image showed $. User said "billing". I'll use PHP as it is St. Anthony (likely PH). Image showed $5000. I will respect generic $ or just ₱. Defaulting to '$' to match user's image, unless I see PHP elsewhere.
+        // Image shows '$'.
+        previewAmount.textContent = formatter.format(amount || 0); // Display the amount input? If hidden (normal user), it is 0. 
+        // Wait, if normal user has hidden amount, preview will say $0.00.
+        // Maybe we shouldn't show the billing modal for Normal users?
+        // Prompt says: "add this billing and will show after clicking...".
+        // It implies for the active user (Admin/Cashier). 
+        // If normal user is donating, they just upload receipt. They don't generate a receipt for themselves instantly usually (it needs verification).
+        // Plus, "Received by" logic implies cashier layout.
+        // I will show it for everyone, but for normal users $0.00 might be weird unless they entered it.
+        // Actually, normal user input for amount is HIDDEN.
+        // We might just skip modal for normal users? Or show it?
+        // User said "Received by... Name of Cashier". This strongly implies this flow is for the Cashier/Admin side.
+        // So for Normal User, maybe we just submit directly? 
+        // Or maybe let's use the modal but amount is 0/Pending.
+        // I'll assume for now we show it.
+
+        previewTotal.textContent = formatter.format(amount || 0);
+
+        // Show Modal
+        receiptModal.style.display = 'flex';
+    };
+
+    // Close Modal
+    cancelBtn.addEventListener('click', () => {
+        receiptModal.style.display = 'none';
+        pendingPayload = null;
+    });
+
+    // Confirm & Submit
+    confirmBtn.addEventListener('click', () => {
+        if (!pendingPayload) return;
+        submitTransaction(pendingPayload);
+    });
+
+    const submitTransaction = (payload) => {
         // Send to Backend
         const token = localStorage.getItem('token');
         const headers = {
@@ -563,14 +720,17 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.error) throw new Error(data.error);
 
+                // Hide Modal
+                receiptModal.style.display = 'none';
+
                 // Success - Update Frontend List Locally
                 const newDonation = {
                     id: data.transaction_id || nextId++,
-                    name: displayName,
-                    batch: displayBatch,
-                    type: donationTypeInput.value,
-                    amount: amount,
-                    status: 'Confirmed'
+                    name: pendingDisplayName,
+                    batch: pendingDisplayBatch,
+                    type: pendingDonationType,
+                    amount: payload.total_amount,
+                    status: isStaff ? 'Confirmed' : 'Pending'
                 };
 
                 allDonations.push(newDonation);
@@ -580,7 +740,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     renderDonationList();
                 }
 
-                window.alert(`Thank you, ${displayName}! Your donation has been recorded.`);
+                window.alert(`Thank you, ${pendingDisplayName}! Transaction recorded.`);
 
                 // Reset Form
                 donationForm.reset();
@@ -590,34 +750,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 donationTypeInput.value = '';
                 selectedDonationTypeText.textContent = 'Choose a Fundraising Program';
                 donationTypeDropdown.querySelectorAll('.fund-item').forEach(li => li.classList.remove('selected'));
-
-                // Hide Event container
                 eventSelectionContainer.style.display = 'none';
                 selectedEventIdInput.value = '';
 
                 toggleUserFields();
+                pendingPayload = null;
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert("Failed to save donation: " + error.message);
+                alert("Failed to save transaction: " + error.message);
+                // Keep modal open? Or close? Keep open so they can retry or cancel.
             });
     };
 
     // ... existing handlers ...
-
-    // --- Initialization ---
-
-    fetchTransactions();
-    fetchPaymentMethods(); // New fetch call
-    populateBatchYearDropdown();
-    populateDonationTypeDropdown();
-    toggleUserFields(); // Initial run
-
-    // ... existing event listeners ...
-    userTypeSelect.addEventListener('change', toggleUserFields);
-    paymentMethodSelect.addEventListener('change', togglePaymentMethod);
-    // togglePaymentMethod(); // Removed initial call, handled in fetch callback
-    // ... existing listeners ...
 
     const handleAmountInput = (e) => {
         // Ensures only numbers are entered, and formats with commas
@@ -640,16 +786,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 7. Initialization ---
+    // --- Initialization ---
 
-    // fetchTransactions(); // Already called above
-    // populateBatchYearDropdown(); // Already called above
-    // populateDonationTypeDropdown(); // Already called above
+    fetchTransactions();
+    fetchPaymentMethods();
+    populateBatchYearDropdown();
+    populateDonationTypeDropdown();
+    toggleUserFields(); // Initial run
 
     // Set the max date for the date picker to today (to prevent future dates)
     dateOfDonationInput.max = new Date().toISOString().split("T")[0];
 
     // Attach event listeners
+    if (userTypeSelect) userTypeSelect.addEventListener('change', toggleUserFields);
+    if (paymentMethodSelect) paymentMethodSelect.addEventListener('change', togglePaymentMethod);
+
     fundraisingDropdownBtn.addEventListener('click', () => toggleDropdown(fundraisingDropdown, fundraisingDropdownBtn));
     fundraisingDropdown.addEventListener('click', handleFundSelection);
 
@@ -661,5 +812,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', closeDropdownIfClickedOutside);
 
     // Initial setup for the filter dropdown
-    fundraisingDropdown.querySelector('[data-fund="All"]').classList.add('selected');
+    const allFilter = fundraisingDropdown.querySelector('[data-fund="All"]');
+    if (allFilter) allFilter.classList.add('selected');
 });

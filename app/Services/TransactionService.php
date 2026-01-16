@@ -80,7 +80,17 @@ class TransactionService
             throw new Exception('Amount is required for this payment method');
         }
 
+        // Create Transaction
         $transactionId = $this->repository->createTransaction($data);
+
+        // Auto-Generate Receipt Number
+        // Format: RCP-{Year}-{ID padded to 6 digits}
+        // e.g. RCP-2026-000123
+        $year = date('Y');
+        $paddedId = str_pad($transactionId, 6, '0', STR_PAD_LEFT);
+        $generatedReceiptNumber = "RCP-{$year}-{$paddedId}";
+
+        $this->repository->updateReceiptNumber($transactionId, $generatedReceiptNumber);
 
         // Create Transaction Detail if fee_id is provided
         if (!empty($data['fee_id'])) {
@@ -91,7 +101,58 @@ class TransactionService
             ]);
         }
 
+        // Handle Receipt Image Upload (Base64)
+        if (!empty($data['receipt_image'])) {
+            $receiptUrl = $this->saveReceiptImage($transactionId, $data['receipt_image']);
+            if ($receiptUrl) {
+                $this->repository->updateReceiptUrl($transactionId, $receiptUrl);
+            }
+        }
+
         return $transactionId;
+    }
+
+    private function saveReceiptImage($transactionId, $base64String)
+    {
+        // Define path: root/asset/uploads/receipts
+        $targetDir = dirname(__DIR__, 2) . '/asset/uploads/receipts/';
+
+        // Relative path for database storing (accessible via browser from views/)
+        // Application structure: public/ (views served from here?) vs logic.
+        // If the view is in views/SponsorDonation.html, and assets are in ../asset
+        // Store the relative path string
+        $dbPathPrefix = '../asset/uploads/receipts/';
+
+        // Ensure directory exists
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        // Extract image data
+        if (preg_match('/^data:image\/(\w+);base64,/', $base64String, $type)) {
+            $base64String = substr($base64String, strpos($base64String, ',') + 1);
+            $type = strtolower($type[1]); // jpg, png, gif
+
+            if (!in_array($type, ['jpg', 'jpeg', 'png', 'gif'])) {
+                return null;
+            }
+
+            $base64String = base64_decode($base64String);
+
+            if ($base64String === false) {
+                return null;
+            }
+
+            // Generate Filename
+            $filename = "receipt_{$transactionId}.{$type}";
+            $filePath = $targetDir . $filename;
+
+            // Save file
+            if (file_put_contents($filePath, $base64String)) {
+                return $dbPathPrefix . $filename; // Return the web-accessible path
+            }
+        }
+        return null;
     }
 
     public function getTransactionsByMemberId($member_id)

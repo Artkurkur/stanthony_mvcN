@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <!-- NEW: Transaction Selection Component -->
+        <!-- Transaction Selection Component -->
         <div class="transaction-selection-container" id="selection-view">
             <h2 class="selection-title">Select Transaction</h2>
             <div class="selection-cards">
@@ -45,6 +45,18 @@
                         <i class="fas fa-handshake"></i>
                     </div>
                     <h3>Sponsorship</h3>
+                </div>
+                <div class="selection-card InKind-card" id="btn-InKind">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <h3>In-Kind Donation</h3>
+                </div>
+                <div class="selection-card contribution-card" id="btn-contribution">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Contribution</h3>
                 </div>
             </div>
         </div>
@@ -144,14 +156,16 @@
                             placeholder="e.g., 5,000">
                     </div>
 
+                    <div class="input-group" id="receipt-upload-group" style="display: none;">
+                        <label for="receipt-upload">Upload Receipt (Proof of Donation) :</label>
+                        <input type="file" id="receipt-upload" name="receipt_image" accept="image/*">
+                    </div>
+
+
+
                     <div class="input-group">
                         <label for="date-of-donation">Date of Donation :</label>
                         <input type="date" id="date-of-donation" name="Date of Donation" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="dedication">Dedication (optional) :</label>
-                        <input type="text" id="dedication" name="Dedication">
                     </div>
 
                     <button type="submit" class="generate-receipt-btn">GENERATE RECEIPT</button>
@@ -218,7 +232,76 @@
             </div>
         </div>
     </div>
+    <!-- Receipt Confirmation Modal -->
+    <div id="receipt-modal" class="modal-overlay" style="display: none;">
+        <div class="receipt-container">
+            <div class="receipt-header">
+                <h2>SAA ALUMNI ASSOCIATION</h2>
+                <p>123 Business Street, Commerce City, ST 12345</p>
+                <p>Phone: (555) 123-4567 | Email: billing@saa-alumni.com</p>
+                <p>Tax ID: 12-3456789</p>
+            </div>
+            <hr>
+            <div class="receipt-title">
+                <h3>RECEIPT</h3>
+            </div>
+
+            <div class="receipt-info-grid">
+                <div class="info-row">
+                    <span class="label">Receipt No:</span>
+                    <span class="value" id="preview-receipt-no">RCP-YYYY-XXXXXX (Pending)</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Date:</span>
+                    <span class="value" id="preview-date">January 16, 2026</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Customer Name:</span>
+                    <span class="value" id="preview-name">Full Name</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Payment Method:</span>
+                    <span class="value" id="preview-method">Cash</span>
+                </div>
+            </div>
+
+            <table class="receipt-table">
+                <thead>
+                    <tr>
+                        <th>Transaction Description</th>
+                        <th class="text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="preview-desc">General Fund</td>
+                        <td class="text-right" id="preview-amount">$5000.00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+            <div class="receipt-total">
+                <span class="total-label">TOTAL:</span>
+                <span class="total-amount" id="preview-total">$5000.00</span>
+            </div>
+            <hr>
+
+            <div class="receipt-footer">
+                <p>Thank you for your business!</p>
+                <p>For questions about this receipt, contact us at billing@saa-alumni.com</p>
+                <p>This is a computer-generated receipt.</p>
+            </div>
+
+            <div class="receipt-actions no-print">
+                <button type="button" class="print-btn" onclick="window.print()">Print Receipt</button>
+                <button type="button" class="confirm-btn" id="confirm-transaction-btn">Proceed to Record</button>
+                <button type="button" class="cancel-btn" id="cancel-transaction-btn">Back to Form</button>
+            </div>
+        </div>
+    </div>
+
     <script src="js/SponsorDonation.js"></script>
+    <script src="js/logout.js"></script>
 </body>
 
 </html>

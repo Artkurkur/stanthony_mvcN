@@ -111,4 +111,16 @@ class TransactionRepository
         $stmt = $this->db->prepare("DELETE FROM transaction WHERE transaction_id = :id");
         return $stmt->execute([':id' => $id]);
     }
+
+    public function updateReceiptUrl($id, $url): bool
+    {
+        $stmt = $this->db->prepare("UPDATE transaction SET receipt_url = :url WHERE transaction_id = :id");
+        return $stmt->execute([':url' => $url, ':id' => $id]);
+    }
+
+    public function updateReceiptNumber($id, $number): bool
+    {
+        $stmt = $this->db->prepare("UPDATE transaction SET receipt_number = :number WHERE transaction_id = :id");
+        return $stmt->execute([':number' => $number, ':id' => $id]);
+    }
 }

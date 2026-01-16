@@ -652,6 +652,16 @@ html {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
 
+/* In-Kind Card Gradient (Green/Emerald) */
+.InKind-card {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+/* Contribution Card Gradient (Purple/Violet) */
+.contribution-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
 .selection-card .icon-wrapper {
     font-size: 4rem;
     margin-bottom: 20px;
@@ -745,4 +755,202 @@ html {
 
 .event-date {
     display: none;
+}
+
+/* ========================================================================= */
+/* RECEIPT MODAL STYLES */
+/* ========================================================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.receipt-container {
+    background: #fff;
+    width: 600px;
+    max-width: 90%;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.receipt-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.receipt-header h2 {
+    color: #5d6eff;
+    /* Similar blue to image */
+    margin: 0 0 10px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.receipt-header p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.receipt-title h3 {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 20px;
+    margin: 20px 0;
+    letter-spacing: 2px;
+}
+
+.receipt-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 40px;
+    margin-bottom: 30px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-row .label {
+    font-weight: bold;
+    color: #444;
+}
+
+.receipt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.receipt-table thead th {
+    background-color: #5d6eff;
+    /* Header Blue */
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+.receipt-table thead th.text-right,
+.receipt-table tbody td.text-right {
+    text-align: right;
+}
+
+.receipt-table tbody td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.receipt-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.receipt-total .total-amount {
+    color: #5d6eff;
+    font-size: 24px;
+}
+
+.receipt-footer {
+    text-align: center;
+    font-size: 12px;
+    color: #777;
+    margin-top: 30px;
+    line-height: 1.5;
+}
+
+.receipt-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.receipt-actions button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.print-btn {
+    background: #5d6eff;
+    color: #fff;
+}
+
+.print-btn:hover {
+    background: #4b5bd6;
+}
+
+.confirm-btn {
+    background: #28a745;
+    color: #fff;
+}
+
+.confirm-btn:hover {
+    background: #218838;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: #fff;
+}
+
+.cancel-btn:hover {
+    background: #5a6268;
+}
+
+/* PRINT MEDIA QUERY */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .modal-overlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: auto;
+        background: none;
+    }
+
+    .receipt-container,
+    .receipt-container * {
+        visibility: visible;
+    }
+
+    .receipt-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        max-width: 100%;
+        box-shadow: none;
+        padding: 0;
+    }
+
+    .receipt-actions,
+    .no-print {
+        display: none !important;
+    }
 }

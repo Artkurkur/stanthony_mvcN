@@ -52,8 +52,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // But validation checks for donationTypeInput.value. 
             // We should set it manually or keep it.
-            // Let's keep it visible but maybe optional? Or user selects "General Fund"?
-            // I'll leave it visible for now as In-Kind for "Outreach Program" is valid.
+            // Let's keep it visible for now as In-Kind for "Outreach Program" is valid.
+        }
+
+        // Filter Board by Card Type
+        if (type) {
+            currentDonations = allDonations.filter(d => d.transaction_type && d.transaction_type.toLowerCase() === type.toLowerCase());
+            renderDonationList();
+            if (boardTitle) boardTitle.textContent = `${type} Transactions`;
+
+            // Reset Category Filter Visuals
+            currentFilter = 'All';
+            if (selectedFundText) selectedFundText.textContent = "All Fundraising";
+            if (fundraisingDropdown) {
+                fundraisingDropdown.querySelectorAll('.fund-item').forEach(li => li.classList.remove('selected'));
+                const allItem = fundraisingDropdown.querySelector('[data-fund="All"]');
+                if (allItem) allItem.classList.add('selected');
+            }
         }
 
         console.log(`User selected: ${type}`);
@@ -157,7 +172,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         status: t.receipt_generated ? 'Confirmed' : 'Pending',
                         // Store original for filtering if needed
                         payment_method: t.method_name,
-                        receipt_url: t.receipt_url // Map the receipt URL
+                        payment_method: t.method_name,
+                        receipt_url: t.receipt_url,
+                        transaction_type: t.transaction_type // Store type for filtering
                     }));
 
                     // Reset to All on load
@@ -335,12 +352,18 @@ document.addEventListener('DOMContentLoaded', () => {
             currentFilter = newFundType;
 
             if (newFundType === 'All') {
-                currentDonations = [...allDonations];
-                boardTitle.textContent = "General Donation Board";
+                // Return to all of CURRENT Card Type
+                currentDonations = allDonations.filter(d => d.transaction_type && d.transaction_type.toLowerCase() === selectedTransactionType.toLowerCase());
+                boardTitle.textContent = `${selectedTransactionType} Transactions`;
                 selectedFundText.textContent = buttonText;
             } else {
-                currentDonations = allDonations.filter(d => d.type === newFundType);
-                boardTitle.textContent = `${newFundType} Board`;
+                // Filter by Card Type AND Category (d.type is Category)
+                currentDonations = allDonations.filter(d =>
+                    d.transaction_type && d.transaction_type.toLowerCase() === selectedTransactionType.toLowerCase() &&
+                    d.type === newFundType
+                );
+
+                boardTitle.textContent = `${newFundType} (${selectedTransactionType})`;
                 selectedFundText.textContent = buttonText;
             }
 
@@ -687,6 +710,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.alert("Please enter the Item Description.");
                 return null;
             }
+        } else if (selectedTransactionType === 'Contribution') {
+            itemDesc = "Alumni Contribution";
         }
 
         return {
@@ -788,8 +813,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cart.forEach(item => {
             const tr = document.createElement('tr');
+
+            // Description Logic
+            let description = "";
+            if (item.type === 'Contribution') {
+                description = "Alumni Contribution";
+            } else if (item.item_description) {
+                description = item.item_description;
+            } else if (item.eventName) {
+                description = item.eventName;
+            } else {
+                description = "Monetary Support";
+            }
+
             tr.innerHTML = `
-                <td>${item.category} ${item.eventName ? `(${item.eventName})` : ''}</td>
+                <td>${item.type}</td>
+                <td>${item.category}</td>
+                <td>${description}</td>
                 <td class="text-right">${formatter.format(item.amount)}</td>
             `;
             tbody.appendChild(tr);

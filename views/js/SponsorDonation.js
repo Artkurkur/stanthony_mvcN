@@ -120,7 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         amount: t.total_amount,
                         status: t.receipt_generated ? 'Confirmed' : 'Pending',
                         // Store original for filtering if needed
-                        payment_method: t.method_name
+                        payment_method: t.method_name,
+                        receipt_url: t.receipt_url // Map the receipt URL
                     }));
 
                     // Reset to All on load
@@ -160,6 +161,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${formatCurrency(donation.amount)}</td>
                 <td class="status-${donation.status ? donation.status.toLowerCase() : 'pending'}">${donation.status}</td>
                 <td>
+                    ${donation.receipt_url || donation.receipt_image ? `
+                        <button class="action-btn view-receipt-btn" data-url="${donation.receipt_url || donation.receipt_image}" title="View Receipt">
+                            <i class="fas fa-file-image" style="color: #4CAF50;"></i>
+                        </button>
+                    ` : ''}
                     <button class="action-btn delete-btn" data-id="${donation.id}" title="Delete Donation">
                         <i class="fas fa-trash-alt"></i>
                     </button>
@@ -170,6 +176,28 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add event listeners for delete buttons after rendering
         document.querySelectorAll('.delete-btn').forEach(button => {
             button.addEventListener('click', handleDelete);
+        });
+
+        // Add listeners for view receipt buttons
+        document.querySelectorAll('.view-receipt-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                // Handle button or icon click (closest button logic)
+                const btn = e.target.closest('button');
+                const url = btn.getAttribute('data-url');
+                if (url) {
+                    // If it's a relative path from DB like "../asset/...", we need to make sure it resolves correctly from the current page's perspective.
+                    // Current page is http://localhost:8000/views/SponsorDonation.html (maybe?)
+                    // Or http://localhost:8000/
+                    // The DB path is relative to the PHP script execution context usually.
+                    // If the saved path is "../asset/uploads/receipts/x.png", and we are in `views/`, then `../asset` works if `views` and `asset` are siblings in root.
+                    // public/ ... actually user said "c:\xampp\htdocs\stanthony_mvcN\views\SponsorDonation.html".
+                    // And assets are in "c:\xampp\htdocs\stanthony_mvcN\asset".
+                    // So `../asset` is correct from `views/`.
+
+                    // However, Base64 strings (for local preview before refresh) act as Data URIs.
+                    window.open(url, '_blank');
+                }
+            });
         });
     };
 
@@ -462,20 +490,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // For Normal Users: ALWAYS Hide Amount, Show Receipt Upload
             donationAmountGroup.style.display = 'none';
             donationAmountInputRef.required = false;
-
-            // Show Receipt Upload if it's a QR/Cashless method (which is all they can see)
-            // But we can just show it regardless for them as they need to upload proof
             receiptUploadGroup.style.display = 'block';
             receiptUploadInput.required = true;
         } else {
-            // Admin/Cashier: Respect the original logic (hide amount only if GCash implies no manual entry needed instantly, or maybe they enter it?)
-            // The original logic hid amount for GCash. We keep that.
-            // Receipt upload is NOT for them (they are verifying or taking cash).
-            receiptUploadGroup.style.display = 'none';
-            receiptUploadInput.required = false;
+            // Admin/Cashier: 
+            // Show Receipt Upload ONLY if GCash/QR is selected
+            if (selectedOption && selectedOption.text.toLowerCase().includes('gcash')) {
+                receiptUploadGroup.style.display = 'block';
+                receiptUploadInput.required = false; // Optional
 
-            // Check if "Cash" is selected
-            // Auto-generated backend side now. No manual input needed.
+                // Also ensure Amount is visible for Staff even if GCash? 
+                // User didn't ask, but logically they need to enter amount.
+                // However, the top logic sets donationAmountGroup.style.display = 'none' for GCash.
+                // If we leave it hidden, amount is 0. 
+                // Users usually fix this by entering amount *first* then selecting method?
+                // Or maybe we should unhide it. 
+                // For now, I'll stick specifically to the User's request about Receipt Upload.
+            } else {
+                receiptUploadGroup.style.display = 'none';
+                receiptUploadInput.required = false;
+            }
         }
     };
 
@@ -730,7 +764,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     batch: pendingDisplayBatch,
                     type: pendingDonationType,
                     amount: payload.total_amount,
-                    status: isStaff ? 'Confirmed' : 'Pending'
+                    status: isStaff ? 'Confirmed' : 'Pending',
+                    receipt_image: payload.receipt_image // Store local base64 for immediate viewing
                 };
 
                 allDonations.push(newDonation);

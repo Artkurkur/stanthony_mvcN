@@ -33,6 +33,15 @@ class AlumniRepository
         return $user ?: null;
     }
 
+    // ✅ Find first user by Role ID
+    public function findFirstByRole(int $roleId): ?array
+    {
+        $stmt = $this->db->prepare("SELECT * FROM alumni WHERE role_id = :role_id LIMIT 1");
+        $stmt->execute([':role_id' => $roleId]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $user ?: null;
+    }
+
 
     public function getAll(): array
     {

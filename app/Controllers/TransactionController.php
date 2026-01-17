@@ -56,13 +56,18 @@ class TransactionController
     {
         try {
             $data = json_decode(file_get_contents('php://input'), true);
-            $id = $this->service->createTransaction($data);
 
-            // Log Action
+            // Authenticate and get user FIRST
             $auth = new AuthMiddleware();
             $user = $auth->getCurrentUser();
             $userId = $user['member_id'] ?? null;
-            $details = "Created Transaction ID: $id" . ($userId ? " by user $userId" : " (Guest)");
+            $username = $user['username'] ?? 'Unknown';
+
+            // Pass authenticated user ID to service
+            $id = $this->service->createTransaction($data, $userId);
+
+            // Log Action
+            $details = "Created Transaction ID: $id" . ($userId ? "  $username" : " (Guest)");
 
             $this->logService->logAction($userId, 'create_transaction', $details);
 

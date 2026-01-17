@@ -40,10 +40,28 @@ class TransactionService
         return $transaction;
     }
 
-    public function createTransaction($data)
+    public function createTransaction($data, $creatorId = null)
     {
         $memberId = null;
         $fullName = $data['name'] ?? '';
+
+
+        // Enforce Cashier Name in 'received_by'
+        // Always set received_by to the name of the user with Role ID 7 (Cashier)
+        $cashier = $this->alumniRepository->findFirstByRole(7);
+        if ($cashier) {
+            $data['received_by'] = trim($cashier['fname'] . ' ' . $cashier['lname']);
+            if (empty($data['received_by'])) {
+                $data['received_by'] = $cashier['username'];
+            }
+        } else {
+            // Fallback: If no cashier found, maybe keep existing or set default?
+            // "Online" is often used for self-service or maybe just leave what frontend sent if no cashier exists.
+            // But per instruction "it's always the cashier", so we try our best.
+            if (empty($data['received_by'])) {
+                $data['received_by'] = 'Online';
+            }
+        }
 
         // Handle Alumni Logic
         if (isset($data['user_type']) && $data['user_type'] === 'Alumni') {

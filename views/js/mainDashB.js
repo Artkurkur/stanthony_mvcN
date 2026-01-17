@@ -64,7 +64,72 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Optional: fetch fresh user data from backend using JWT
   fetchUserProfile(token, user.member_id);
+
+  // Check for Unread Notifications
+  checkForUnreadNotifications(token);
 });
+
+function checkForUnreadNotifications(token) {
+  // Mode=user ensures we get personal notifications even if Admin
+  fetch('http://localhost:8000/api/notifications?mode=user', {
+    headers: {
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      if (!response.ok) throw new Error("Failed to fetch notifications");
+      return response.json();
+    })
+    .then(data => {
+      if (Array.isArray(data)) {
+        // Count unread (is_read is 0 or "0")
+        const unreadCount = data.filter(n => n.is_read == 0).length;
+
+        if (unreadCount > 0) {
+          // 1. Trigger Push/Toast
+          showPushNotification(unreadCount);
+
+          // 2. Update UI Badge on Card
+          const cardText = document.querySelector('.notification-card .card-text strong');
+          if (cardText) {
+            const badge = document.createElement('span');
+            badge.style.color = 'white';
+            badge.style.backgroundColor = 'red';
+            badge.style.borderRadius = '50%';
+            badge.style.padding = '2px 6px';
+            badge.style.marginLeft = '8px';
+            badge.style.fontSize = '12px';
+            badge.textContent = unreadCount;
+            cardText.appendChild(badge);
+          }
+        }
+      }
+    })
+    .catch(err => console.error("Notification check failed:", err));
+}
+
+function showPushNotification(count) {
+  // Check if browser supports notifications
+  if (!("Notification" in window)) return;
+
+  if (Notification.permission === "granted") {
+    createNotification(count);
+  } else if (Notification.permission !== "denied") {
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        createNotification(count);
+      }
+    });
+  }
+}
+
+function createNotification(count) {
+  new Notification("SAA Reunite", {
+    body: `You have ${count} unread notification${count > 1 ? 's' : ''}.`,
+    icon: "../asset/LogoSAA.png"
+  });
+}
 
 function isTokenExpired(token) {
   try {

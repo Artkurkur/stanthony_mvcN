@@ -71,9 +71,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. LOGIC PARA SA PAGPILI NG REPORT AT PAGPAPALIT NG KULAY
     listItems.forEach(item => {
         item.addEventListener('click', () => {
-            const selectedReport = item.innerText;
+            const selectedReport = item.innerText.trim();
             headerText.innerText = selectedReport;
             dropdown.classList.remove('active');
+
+            // Filter Data
+            if (selectedReport === "All Reports") {
+                renderTable(allReportsData);
+            } else if (selectedReport === "Events") {
+                // Events Logic: Show items that are NOT in the standard static list
+                const staticPrograms = [
+                    "Scholarship Program",
+                    "Outreach Program",
+                    "Alumni Grand Reunion",
+                    "Infrastructure Support",
+                    "General Fund"
+                ];
+                const filteredData = allReportsData.filter(report => !staticPrograms.includes(report.event_name));
+                renderTable(filteredData);
+            } else {
+                // Filter matches event_name exactly for static programs
+                const filteredData = allReportsData.filter(report => report.event_name === selectedReport);
+                renderTable(filteredData);
+            }
 
             // Variables para sa kulay base sa napili
             let bgColor = "#FDF066"; // Default Yellow
@@ -305,7 +325,9 @@ if (searchInput) {
 }
 
 
-// --- DATA POPULATION LOGIC ---
+// Global variable to store report data
+let allReportsData = [];
+
 document.addEventListener('DOMContentLoaded', () => {
     fetchDonationOverview();
 });
@@ -332,41 +354,50 @@ async function fetchDonationOverview() {
 
         const data = await response.json();
 
-        // Clear table
-        tableBody.innerHTML = '';
+        // Store globally
+        allReportsData = data || [];
 
-        if (!data || data.length === 0) {
-            tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No data available</td></tr>';
-            return;
-        }
-
-        data.forEach((item, index) => {
-            const row = document.createElement('tr');
-
-            // Format currency
-            // Format currency
-            const amountVal = parseFloat(item.total_donations);
-            const totalDonations = 'Php ' + amountVal.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-
-            // Status styling
-            let statusColor = item.status === 'Active' ? 'green' : 'gray';
-
-            row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${item.event_name}</td>
-                <td>${totalDonations}</td>
-                <td>${item.total_donors}</td>
-                <td style="color: ${statusColor}; font-weight: bold;">${item.status}</td>
-                <td>${item.top_donor}</td>
-            `;
-            tableBody.appendChild(row);
-        });
+        // Initial Render
+        renderTable(allReportsData);
 
     } catch (error) {
         console.error('Error:', error);
         tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Error loading data</td></tr>';
     }
+}
+
+function renderTable(data) {
+    const tableBody = document.getElementById('scroll-data');
+    if (!tableBody) return;
+
+    tableBody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No data available</td></tr>';
+        return;
+    }
+
+    data.forEach((item, index) => {
+        const row = document.createElement('tr');
+
+        // Format currency
+        const amountVal = parseFloat(item.total_donations);
+        const totalDonations = 'Php ' + amountVal.toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        });
+
+        // Status styling
+        let statusColor = item.status === 'Active' ? 'green' : 'gray';
+
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${item.event_name}</td>
+            <td>${totalDonations}</td>
+            <td>${item.total_donors}</td>
+            <td style="color: ${statusColor}; font-weight: bold;">${item.status}</td>
+            <td>${item.top_donor}</td>
+        `;
+        tableBody.appendChild(row);
+    });
 }

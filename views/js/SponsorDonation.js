@@ -14,17 +14,47 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnDonation = document.getElementById('btn-donation');
     const btnSponsorship = document.getElementById('btn-sponsorship');
     const btnBack = document.getElementById('back-to-selection-btn');
+    const btnInKind = document.getElementById('btn-InKind');
+    const inKindFields = document.getElementById('in-kind-fields');
+    const inKindDescInput = document.getElementById('inkind-item-desc');
+    const btnContribution = document.getElementById('btn-contribution');
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    const proceedPaymentBtn = document.getElementById('proceed-payment-btn');
+    const cartBody = document.getElementById('cart-body');
+    const cartTotalElement = document.getElementById('cart-total');
+    const cartContainer = document.getElementById('cart-container');
+    let cart = [];
 
     // State for Transaction Type (Donation vs Sponsorship)
     let selectedTransactionType = null;
 
     // View Switching Logic
     const showMainContent = (type) => {
-        selectedTransactionType = type.toLowerCase(); // 'donation' or 'sponsorship'
+        selectedTransactionType = type;
         selectionView.style.display = 'none';
         mainContent.style.display = 'flex';
-        // Add fade-in animation to main content
         mainContent.style.animation = 'fadeIn 0.5s ease-out';
+
+        // In-Kind Logic
+        const isInKind = type === 'In-Kind';
+        if (inKindFields) {
+            inKindFields.style.display = isInKind ? 'block' : 'none';
+            // Also Change Label for Amount -> Estimated Value
+            const amountLabel = document.querySelector('label[for="donation-amount"]');
+            if (amountLabel) amountLabel.textContent = isInKind ? 'Estimated Value :' : 'Donation Amount :';
+
+            // Hide standard Dropdown for In-Kind? Data says user wants ONLY description form changes content.
+            // Maybe we hide the "Fundraising Program" dropdown or rename it?
+            // User said: "In-kind card... content of the form will change".
+            // Let's hide the standard Type dropdown for In-Kind to simplify.
+            // const typeContainer = document.querySelector('.custom-select-container');
+            // if (typeContainer) typeContainer.style.display = isInKind ? 'none' : 'block';
+
+            // But validation checks for donationTypeInput.value. 
+            // We should set it manually or keep it.
+            // Let's keep it visible but maybe optional? Or user selects "General Fund"?
+            // I'll leave it visible for now as In-Kind for "Outreach Program" is valid.
+        }
 
         console.log(`User selected: ${type}`);
     };
@@ -44,6 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (btnBack) {
         btnBack.addEventListener('click', showSelectionView);
+    }
+    if (btnInKind) {
+        btnInKind.addEventListener('click', () => showMainContent('In-Kind'));
+    }
+    if (btnContribution) {
+        btnContribution.addEventListener('click', () => showMainContent('Contribution'));
     }
 
     // Elements for the Donation Type Custom Select (Form Dropdown)
@@ -568,6 +604,201 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     };
 
+    // --- Cart Functions ---
+    const renderCart = () => {
+        cartBody.innerHTML = '';
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            total += item.amount;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="padding: 8px;">
+                    <div style="font-weight:bold;">${item.category}</div>
+                    <div style="font-size:12px;color:#777;">
+                        ${item.type} 
+                        ${item.eventName ? `(${item.eventName})` : ''}
+                        ${item.item_description ? `<br/>Desc: ${item.item_description}` : ''}
+                    </div>
+                </td>
+                <td style="padding: 8px; text-align: right;">${formatCurrency(item.amount)}</td>
+                <td style="padding: 8px; text-align: center;">
+                    <button type="button" class="action-btn delete-btn" onclick="removeFromCart(${index})">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+            `;
+            cartBody.appendChild(row);
+        });
+
+        // Update Total
+        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' });
+        cartTotalElement.textContent = formatter.format(total);
+
+        // Show/Hide Cart Container
+        if (cart.length > 0) {
+            cartContainer.style.display = 'block';
+        } else {
+            cartContainer.style.display = 'none';
+        }
+    };
+
+    window.removeFromCart = (index) => {
+        cart.splice(index, 1);
+        renderCart();
+    };
+
+    const validateAndGetItem = () => {
+        if (!donationTypeInput.value) {
+            window.alert("Please select a Type of Fundraising Program.");
+            return null;
+        }
+
+        if (donationTypeInput.value === 'Events' && !selectedEventIdInput.value) {
+            window.alert("Please select an Event from the list.");
+            return null;
+        }
+
+        const formData = new FormData(donationForm);
+        const rawAmount = formData.get('Donation Amount');
+        const amountString = rawAmount ? rawAmount.replace(/,/g, '') : '0';
+        const amount = parseInt(amountString, 10);
+
+        if (!amount || amount <= 0) {
+            window.alert("Please enter a valid amount.");
+            return null;
+        }
+
+        // Fee ID Mapping
+        let feeId;
+        switch (selectedTransactionType) {
+            case 'Sponsorship': feeId = 1; break;
+            case 'Donation': feeId = 2; break;
+            case 'In-Kind': feeId = 3; break;
+            case 'Contribution': feeId = 4; break;
+            default: feeId = 2;
+        }
+
+        // Capture Description
+        let itemDesc = null;
+        if (selectedTransactionType === 'In-Kind' || selectedTransactionType === 'In-kind') {
+            itemDesc = inKindDescInput.value;
+            if (!itemDesc) {
+                window.alert("Please enter the Item Description.");
+                return null;
+            }
+        }
+
+        return {
+            type: selectedTransactionType,
+            category: donationTypeInput.value,
+            fee_id: feeId,
+            amount: amount,
+            item_description: itemDesc,
+            event_id: selectedEventIdInput.value ? parseInt(selectedEventIdInput.value, 10) : null,
+            eventName: selectedEventIdInput.dataset.eventName || ''
+        };
+    };
+
+    const handleAddToCart = () => {
+        const item = validateAndGetItem();
+        if (item) {
+            cart.push(item);
+            renderCart();
+            donationAmountInput.value = '';
+        }
+    };
+
+    const handleProceedPayment = async () => {
+        if (cart.length === 0) {
+            window.alert('Cart is empty!');
+            return;
+        }
+
+        const formData = new FormData(donationForm);
+        const userType = document.getElementById('user-type').value;
+        const paymentMethodId = paymentMethodSelect.value;
+        const selectedMethodName = paymentMethodSelect.options[paymentMethodSelect.selectedIndex]?.text || "Unknown";
+
+        if (!paymentMethodId) {
+            window.alert("Please select a Payment Method.");
+            return;
+        }
+
+        const receiptFile = receiptUploadInput.files[0];
+        const fileToBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        };
+
+        let receiptBase64 = null;
+        if (receiptFile) {
+            try {
+                receiptBase64 = await fileToBase64(receiptFile);
+            } catch (err) { return; }
+        }
+
+        let fname = formData.get('fname');
+        let lname = formData.get('lname');
+        let fullName = userType === 'Non-User' ? document.getElementById('full-name').value : `${fname} ${lname}`;
+
+        const totalAmount = cart.reduce((sum, item) => sum + item.amount, 0);
+
+        pendingPayload = {
+            total_amount: totalAmount,
+            received_by: "Online",
+            receipt_generated: 1,
+            payment_method_id: parseInt(paymentMethodId, 10),
+            user_type: userType,
+            fname: fname,
+            lname: lname,
+            name: fullName,
+            mobile_number: formData.get('mobile_number'),
+            batch_year: formData.get('batch_year'),
+            transaction_type: cart[0].type,
+            transaction_category: cart[0].category,
+            event_id: cart[0].event_id,
+            items: cart,
+            receipt_image: receiptBase64
+        };
+
+        if (userType === 'Alumni') {
+            pendingDisplayName = `${pendingPayload.fname} ${pendingPayload.lname}`;
+            pendingDisplayBatch = pendingPayload.batch_year;
+        } else {
+            pendingDisplayName = pendingPayload.name;
+            pendingDisplayBatch = "N/A";
+        }
+        pendingDonationType = "Multi-Item Transaction";
+
+        const year = new Date().getFullYear();
+        const paddedId = String(nextId).padStart(6, '0');
+        previewReceiptNo.textContent = `RCP-${year}-${paddedId}`;
+        previewDate.textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        previewName.textContent = fullName;
+        previewMethod.textContent = selectedMethodName;
+
+        const tbody = document.querySelector('.receipt-table tbody');
+        tbody.innerHTML = '';
+        const formatter = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'PHP' });
+
+        cart.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${item.category} ${item.eventName ? `(${item.eventName})` : ''}</td>
+                <td class="text-right">${formatter.format(item.amount)}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        previewTotal.textContent = formatter.format(totalAmount);
+        receiptModal.style.display = 'flex';
+    };
+
     // ... existing functions ...
 
     // Modal Elements
@@ -843,7 +1074,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Donation type selection handler is attached inside populateDonationTypeDropdown
 
     donationAmountInput.addEventListener('input', handleAmountInput);
-    donationForm.addEventListener('submit', handleFormSubmit);
+    // donationForm.addEventListener('submit', handleFormSubmit);
+    if (addToCartBtn) addToCartBtn.addEventListener('click', handleAddToCart);
+    if (proceedPaymentBtn) proceedPaymentBtn.addEventListener('click', handleProceedPayment);
     document.addEventListener('click', closeDropdownIfClickedOutside);
 
     // Initial setup for the filter dropdown

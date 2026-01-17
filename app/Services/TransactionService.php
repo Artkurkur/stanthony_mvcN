@@ -102,20 +102,31 @@ class TransactionService
         $transactionId = $this->repository->createTransaction($data);
 
         // Auto-Generate Receipt Number
-        // Format: RCP-{Year}-{ID padded to 6 digits}
-        // e.g. RCP-2026-000123
         $year = date('Y');
         $paddedId = str_pad($transactionId, 6, '0', STR_PAD_LEFT);
         $generatedReceiptNumber = "RCP-{$year}-{$paddedId}";
 
         $this->repository->updateReceiptNumber($transactionId, $generatedReceiptNumber);
 
-        // Create Transaction Detail if fee_id is provided
-        if (!empty($data['fee_id'])) {
+        // Create Transaction Details
+        // Support new 'items' array OR legacy single fee_id
+        if (!empty($data['items']) && is_array($data['items'])) {
+            foreach ($data['items'] as $item) {
+                if (!empty($item['fee_id']) && !empty($item['amount'])) {
+                    $this->detailsRepository->createTransactionDetail([
+                        'transaction_id' => $transactionId,
+                        'fee_id' => $item['fee_id'],
+                        'paid_amount' => $item['amount'],
+                        'item_description' => $item['item_description'] ?? null
+                    ]);
+                }
+            }
+        } elseif (!empty($data['fee_id'])) {
+            // Legacy/Single Item Fallback
             $this->detailsRepository->createTransactionDetail([
                 'transaction_id' => $transactionId,
                 'fee_id' => $data['fee_id'],
-                'paid_amount' => $data['total_amount'] ?? 0 // Use detailed amount or total
+                'paid_amount' => $data['total_amount'] ?? 0
             ]);
         }
 

@@ -28,13 +28,14 @@ class TransactionDetailsRepository
     public function createTransactionDetail(array $data): bool
     {
         $stmt = $this->db->prepare("
-             INSERT INTO transaction_details (transaction_id, fee_id, paid_amount)
-             VALUES (:transaction_id, :fee_id, :paid_amount)
+             INSERT INTO transaction_details (transaction_id, fee_id, paid_amount, item_description)
+             VALUES (:transaction_id, :fee_id, :paid_amount, :item_description)
         ");
         return $stmt->execute([
             ':transaction_id' => $data['transaction_id'],
             ':fee_id' => $data['fee_id'],
-            ':paid_amount' => $data['paid_amount']
+            ':paid_amount' => $data['paid_amount'],
+            ':item_description' => $data['item_description'] ?? null
         ]);
     }
 

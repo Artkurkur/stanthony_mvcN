@@ -136,6 +136,15 @@
                         </div>
                     </div>
 
+                    <!-- In-Kind Fields (Hidden by default) -->
+                    <div id="in-kind-fields" style="display: none;">
+                        <div class="input-group">
+                            <label for="mk-item-desc">Item Description (e.g., T-Shirts, Chairs) :</label>
+                            <input type="text" id="inkind-item-desc" name="item_description"
+                                placeholder="Enter item details">
+                        </div>
+                    </div>
+
                     <div class="input-group">
                         <label for="payment-method">Payment Method :</label>
                         <select id="payment-method" name="payment_method" required>
@@ -168,12 +177,41 @@
                         <input type="date" id="date-of-donation" name="Date of Donation" required>
                     </div>
 
-                    <button type="submit" class="generate-receipt-btn">GENERATE RECEIPT</button>
+                    <button type="button" id="add-to-cart-btn" class="generate-receipt-btn">ADD TO LIST</button>
                     <!-- Add Back Button here -->
                     <button type="button" id="back-to-selection-btn" class="back-link-btn"
                         style="margin-top: 10px; background: none; border: none; color: #777; cursor: pointer; text-decoration: underline;">&lt;
                         Back to Selection</button>
                 </form>
+
+                <!-- Transaction Cart Summary -->
+                <div id="cart-container"
+                    style="display: none; margin-top: 20px; border-top: 2px dashed #eee; padding-top: 20px;">
+                    <h3 style="font-size: 16px; margin-bottom: 10px;">Transaction Summary</h3>
+                    <div class="cart-table-wrapper" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;">
+                        <table class="cart-table" style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                            <thead style="background: #f9f9f9;">
+                                <tr>
+                                    <th style="padding: 8px; text-align: left;">Item</th>
+                                    <th style="padding: 8px; text-align: right;">Amount</th>
+                                    <th style="padding: 8px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-body">
+                                <!-- Cart Items -->
+                            </tbody>
+                            <tfoot>
+                                <tr style="font-weight: bold; border-top: 2px solid #ddd;">
+                                    <td style="padding: 10px;">TOTAL</td>
+                                    <td style="padding: 10px; text-align: right;" id="cart-total">₱0.00</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <button type="button" id="proceed-payment-btn" class="generate-receipt-btn"
+                        style="background: #28a745; width: 100%;">PROCEED TO PAYMENT</button>
+                </div>
             </div>
 
             <div class="donation-board-panel">

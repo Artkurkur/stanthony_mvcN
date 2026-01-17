@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/app/Core/Env.php'; // Ensure Env is loaded if Database uses it
-require_once __DIR__ . '/app/Core/Database.php';
+require_once __DIR__ . '/../app/Core/Env.php'; // Ensure Env is loaded if Database uses it
+require_once __DIR__ . '/../app/Core/Database.php';
 
 use App\Core\Database;
 

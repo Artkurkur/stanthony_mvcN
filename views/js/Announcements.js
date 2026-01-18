@@ -1,3 +1,5 @@
+let allAnnouncements = [];
+
 document.addEventListener("DOMContentLoaded", async () => {
     // Check authentication
     const token = localStorage.getItem("token");
@@ -32,6 +34,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (createBtn) {
         createBtn.addEventListener("click", () => {
             window.location.href = "CreateAnnouncement.html";
+        });
+    }
+
+    // Search Functionality
+    const searchInput = document.querySelector('.Search');
+    const searchForm = document.querySelector('.search-form');
+
+    if (searchForm) {
+        searchForm.addEventListener('submit', (e) => e.preventDefault());
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (!query) {
+                renderAnnouncements(allAnnouncements);
+                return;
+            }
+
+            const filtered = allAnnouncements.filter(a =>
+                (a.title && a.title.toLowerCase().includes(query)) ||
+                (a.message && a.message.toLowerCase().includes(query))
+            );
+            renderAnnouncements(filtered);
         });
     }
 });
@@ -78,6 +104,7 @@ function createAnnouncementCard({ id, title, description }, listId) {
 }
 
 // Fetch announcements from API
+// Fetch announcements from API
 async function fetchAnnouncements() {
     const newPostList = document.getElementById("newPostList");
     const prevPostList = document.getElementById("prevPostList");
@@ -96,7 +123,6 @@ async function fetchAnnouncements() {
             }
         });
 
-        // Handle unauthorized/forbidden responses
         if (response.status === 401) {
             alert("Your session has expired. Please login again.");
             localStorage.removeItem("token");
@@ -116,68 +142,72 @@ async function fetchAnnouncements() {
         }
 
         const announcements = await response.json();
-        console.log("Fetched announcements:", announcements); // Debug log
-
-        // Clear loading messages
-        newPostList.innerHTML = '';
-        prevPostList.innerHTML = '';
+        console.log("Fetched announcements:", announcements);
 
         if (!announcements || announcements.length === 0) {
-            newPostList.innerHTML = '<p class="no-data">No announcements available.</p>';
-            return;
-        }
-
-        // Sort announcements by date (newest first)
-        announcements.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
-
-        // Get current month and year
-        const now = new Date();
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
-
-        const newPosts = [];
-        const prevPosts = [];
-
-        announcements.forEach(announcement => {
-            const postDate = new Date(announcement.date_posted);
-            const postMonth = postDate.getMonth();
-            const postYear = postDate.getFullYear();
-
-            const post = {
-                id: announcement.announcement_id,
-                title: announcement.title,
-                description: announcement.message
-            };
-
-            // Check if announcement is from current month and year
-            if (postMonth === currentMonth && postYear === currentYear) {
-                newPosts.push(post);
-            } else {
-                prevPosts.push(post);
-            }
-        });
-
-        console.log("New posts:", newPosts); // Debug log
-        console.log("Previous posts:", prevPosts); // Debug log
-
-        // Generate cards dynamically
-        if (newPosts.length > 0) {
-            newPosts.forEach(post => createAnnouncementCard(post, "newPostList"));
+            allAnnouncements = [];
         } else {
-            newPostList.innerHTML = '<p class="no-data">No new posts.</p>';
+            // Sort by date (newest first)
+            announcements.sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted));
+            allAnnouncements = announcements;
         }
 
-        if (prevPosts.length > 0) {
-            prevPosts.forEach(post => createAnnouncementCard(post, "prevPostList"));
-        } else {
-            prevPostList.innerHTML = '<p class="no-data">No previous posts.</p>';
-        }
+        renderAnnouncements(allAnnouncements);
 
     } catch (error) {
         console.error("Error fetching announcements:", error);
-
-        // Show error message to user
         newPostList.innerHTML = `<p class="error">Failed to load announcements. Please try again later.</p>`;
         prevPostList.innerHTML = '';
+    }
+}
+
+function renderAnnouncements(announcements) {
+    const newPostList = document.getElementById("newPostList");
+    const prevPostList = document.getElementById("prevPostList");
+
+    // Clear lists
+    newPostList.innerHTML = '';
+    prevPostList.innerHTML = '';
+
+    if (!announcements || announcements.length === 0) {
+        newPostList.innerHTML = '<p class="no-data">No announcements found.</p>';
+        return;
+    }
+
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+
+    const newPosts = [];
+    const prevPosts = [];
+
+    announcements.forEach(announcement => {
+        const postDate = new Date(announcement.date_posted);
+        const postMonth = postDate.getMonth();
+        const postYear = postDate.getFullYear();
+
+        const post = {
+            id: announcement.announcement_id,
+            title: announcement.title,
+            description: announcement.message
+        };
+
+        if (postMonth === currentMonth && postYear === currentYear) {
+            newPosts.push(post);
+        } else {
+            prevPosts.push(post);
+        }
+    });
+
+    if (newPosts.length > 0) {
+        newPosts.forEach(post => createAnnouncementCard(post, "newPostList"));
+    } else {
+        newPostList.innerHTML = '<p class="no-data">No new posts.</p>';
+    }
+
+    if (prevPosts.length > 0) {
+        prevPosts.forEach(post => createAnnouncementCard(post, "prevPostList"));
+    } else {
+        prevPostList.innerHTML = '<p class="no-data">No previous posts.</p>';
     }
 }

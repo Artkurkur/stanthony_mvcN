@@ -182,10 +182,42 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // Fetch and display events
     console.log("Fetching events...");
-    const events = await fetchEvents();
-    console.log("Events fetched, count:", events.length);
-    console.log("Event data:", events);
+    let allEvents = await fetchEvents();
+    console.log("Events fetched, count:", allEvents.length);
+    console.log("Event data:", allEvents);
 
-    initializeEvents(events);
+    initializeEvents(allEvents);
     console.log("Events initialized");
+
+    // Search Functionality
+    const searchInput = document.querySelector('.Search');
+    const searchForm = document.querySelector('.search-form');
+
+    if (searchForm) {
+        // Prevent default form submission which causes page reload
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+        });
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+
+            if (!query) {
+                // If query is empty, show all events
+                initializeEvents(allEvents);
+                return;
+            }
+
+            const filteredEvents = allEvents.filter(event => {
+                const nameMatch = event.event_name && event.event_name.toLowerCase().includes(query);
+                const locationMatch = event.location && event.location.toLowerCase().includes(query);
+                // Can add more fields if needed, e.g. date
+                return nameMatch || locationMatch;
+            });
+
+            initializeEvents(filteredEvents);
+        });
+    }
 });

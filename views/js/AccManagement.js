@@ -34,7 +34,6 @@ function filterAlumni(searchTerm) {
 
     // Check if search term matches any column
     const matches =
-      id.includes(searchTerm) ||
       fullName.includes(searchTerm) ||
       username.includes(searchTerm) ||
       batchYear.includes(searchTerm) ||
@@ -60,7 +59,7 @@ form.addEventListener("submit", async (e) => {
     const token = localStorage.getItem("token");
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: { 
+      headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${token}`
       },
@@ -139,7 +138,7 @@ async function editAlumni(id) {
         const token = localStorage.getItem("token");
         const response = await fetch(`${API_URL}/${id}`, {
           method: "PUT",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${token}`
           },
@@ -176,7 +175,7 @@ async function deleteAlumni(id) {
 
   try {
     const token = localStorage.getItem("token");
-    const response = await fetch(`${API_URL}/${id}`, { 
+    const response = await fetch(`${API_URL}/${id}`, {
       method: "DELETE",
       headers: {
         "Authorization": `Bearer ${token}`

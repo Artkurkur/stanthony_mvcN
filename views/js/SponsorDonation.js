@@ -512,6 +512,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Roles: 1=Admin, 7=Cashier. Others are "Normal"
     const isStaff = currentUser && (currentUser.role_id === 1 || currentUser.role_id === 7);
 
+    // Restrict access to In-Kind and Contribution cards for non-staff
+    if (!isStaff) {
+        if (btnInKind) btnInKind.style.display = 'none';
+        if (btnContribution) btnContribution.style.display = 'none';
+    }
+
     // Toggle User Fields Logic
     const toggleUserFields = () => {
         const type = userTypeSelect.value;

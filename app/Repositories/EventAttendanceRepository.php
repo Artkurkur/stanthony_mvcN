@@ -52,6 +52,18 @@ class EventAttendanceRepository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findAttendanceId($event_id, $member_id)
+    {
+        $stmt = $this->db->prepare("
+            SELECT attendance_id 
+            FROM event_attendance 
+            WHERE event_id = :event_id AND member_id = :member_id 
+            LIMIT 1
+        ");
+        $stmt->execute([':event_id' => $event_id, ':member_id' => $member_id]);
+        return $stmt->fetchColumn();
+    }
+
     public function createAttendance(array $data): bool
     {
         $stmt = $this->db->prepare("

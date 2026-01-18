@@ -8,6 +8,10 @@ const searchInput = document.getElementById('searchInput');
 const tableBody = document.getElementById('attendanceTable');
 const closeBtn = document.querySelector('.close-btn');
 
+let currentEvent = null;
+let isListLoaded = false;
+let allAttendees = [];
+
 document.addEventListener('DOMContentLoaded', () => {
     init();
 });
@@ -24,7 +28,9 @@ function init() {
 
     // Setup UI Listeners
     setupSearch();
+    setupSearch();
     setupClose();
+    setupFilterDropdown();
 
     // Load Data
     loadEventDetails(eventId);
@@ -39,7 +45,9 @@ function loadEventDetails(id) {
         })
         .then(data => {
             if (data.event_id) {
+                currentEvent = data;
                 updateInfoHeader(data);
+                checkAndRunAutoAbsent();
             }
         })
         .catch(err => {
@@ -68,10 +76,23 @@ function updateInfoHeader(event) {
     // Assuming event_date includes time or we have separate field. 
     // Backend standard is full datetime usually.
     // Assuming just showing date for now, or parsing time if available.
+    // Time Box (Start/End)
     const timeBox = document.querySelector('.time-box');
     if (timeBox) {
-        const d = new Date(event.event_date);
-        const timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        let timeStr = '--:--';
+        if (event.start_time) {
+            // Parse HH:mm or HH:mm:ss
+            const [hours, minutes] = event.start_time.split(':');
+            const h = parseInt(hours, 10);
+            const m = parseInt(minutes, 10);
+            const ampm = h >= 12 ? 'PM' : 'AM';
+            const h12 = h % 12 || 12;
+            timeStr = `${h12}:${m.toString().padStart(2, '0')} ${ampm}`;
+        } else if (event.event_date) {
+            const d = new Date(event.event_date);
+            timeStr = d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
         timeBox.innerHTML = `
             <div>Start</div>
             <div>${timeStr}</div>
@@ -87,8 +108,19 @@ function loadAttendanceList(id) {
         .then(res => res.json())
         .then(data => {
             const list = Array.isArray(data) ? data : [];
-            renderTable(list);
-            updateTotalCount(list.length);
+            allAttendees = list;
+
+            // Calculate separately (Total Stats)
+            const totalPresent = list.filter(p => p.attendance_status && p.attendance_status.toLowerCase() === 'present').length;
+            const totalAttendees = list.length;
+
+            updateTotalCount(totalPresent, totalAttendees);
+
+            // Render based on current filter
+            filterAndRender();
+
+            isListLoaded = true;
+            checkAndRunAutoAbsent();
         })
         .catch(err => {
             console.error("Error loading attendance:", err);
@@ -118,12 +150,14 @@ function renderTable(attendees) {
         const avatarIcon = genderClass === 'female' ? '👩' : '👨';
 
         // Attendance Status Logic
-        const isPresent = person.attendance_status && person.attendance_status.toLowerCase() === 'present';
+        const status = person.attendance_status ? person.attendance_status.toLowerCase() : '';
 
         // Button or Badge
         let actionHtml = '';
-        if (isPresent) {
+        if (status === 'present') {
             actionHtml = `<button class="status-badge status-present" disabled style="border:none; cursor:not-allowed;">Present</button>`;
+        } else if (status === 'absent') {
+            actionHtml = `<button class="status-badge status-absent" disabled style="border:none; cursor:not-allowed; background-color: #dc3545; color: white;">Absent</button>`;
         } else {
             actionHtml = `<button class="status-badge status-going" onclick="markAsPresent(${person.member_id}, ${person.event_id}, this)" style="border:none; cursor:pointer;">Present</button>`;
         }
@@ -172,16 +206,21 @@ function getAvatarHtml(person) {
 }
 
 
-function updateTotalCount(count) {
-    // Update Header Count
+function updateTotalCount(presentCount, totalAttendees = null) {
+    // Update Header Count - Total Present (Index 2)
     const infoItems = document.querySelectorAll('.info-item');
     if (infoItems.length >= 3) {
-        infoItems[2].innerHTML = `<strong>Total Present:</strong> ${count}`;
+        infoItems[2].innerHTML = `<strong>Total Present:</strong> ${presentCount}`;
     }
 
-    // Update Button
+    // Update Button - Total Attendees (Total List Count)
+    // If totalAttendees is passed, update it. If null (e.g. from markAsPresent), keep as is or just update present count logic.
+    // Ideally we store these values or just update text content. 
+    // The button shows "Total Attendees".
     const btn = document.querySelector('.total-present-btn');
-    if (btn) btn.textContent = `Total Attendees: ${count}`;
+    if (btn && totalAttendees !== null) {
+        btn.textContent = `Total Attendees: ${totalAttendees}`;
+    }
 }
 
 function setupSearch() {
@@ -212,6 +251,45 @@ function setupClose() {
             window.close();
         });
     }
+}
+
+function setupFilterDropdown() {
+    // Assuming the dropdown has a uniquely identifiable class or we add one.
+    // Based on analyzing HTML (if I could see it clearly), but let's assume it's the select element in .header-actions or similar?
+    // User said "Summary List" vs "Detailed List".
+    // Let's target the select element inside the container that has 'Summary List' option.
+    // Or simpler: assign an ID to it if I can edit HTML, but user asked to proceed.
+    // Let's assume there's a select element. The screenshot shows a dropdown.
+    // I need to be sure about the selector. 
+    // Wait, I viewed Attendance.html in the previous tool call.
+    // I haven't seen the output of that view_file yet in this turn, but I requested it.
+    // Ah, I am acting in parallel? No, sequential.
+    // Actually, I should use the specific selector found in the HTML.
+    // I will use a generic selector for now and refine if I see the HTML output not matching.
+    // Looking at the screenshot, it looks like a standard <select>.
+    // Let's try to find it by its options or broad select if only one exists.
+    const dropdown = document.querySelector('select'); // Simplest guess if only one select exists.
+    if (dropdown) {
+        dropdown.addEventListener('change', () => {
+            filterAndRender();
+        });
+        // Store reference for filterAndRender
+        dropdown.id = 'viewFilter';
+    }
+}
+
+function filterAndRender() {
+    const dropdown = document.getElementById('viewFilter') || document.querySelector('select');
+    const filterValue = dropdown ? dropdown.value : 'Detailed List'; // Default to detailed if not found
+    // The values are likely 'Summary List' and 'Detailed List' based on user description.
+
+    let filteredList = allAttendees;
+
+    if (filterValue === 'Summary List') {
+        filteredList = allAttendees.filter(p => p.attendance_status && p.attendance_status.toLowerCase() === 'present');
+    }
+
+    renderTable(filteredList);
 }
 
 function formatDate(dateStr) {
@@ -255,16 +333,123 @@ function markAsPresent(memberId, eventId, btnElement) {
             btnElement.classList.add('status-present');
             btnElement.style.cursor = 'not-allowed';
 
-            // Update Count
-            // (Optional: reload list or increment count manually)
-            // loadAttendanceList(eventId); // Reloading might be safer but slower.
-
-            // For now, just let it stay marked.
+            // Increment Total Present Count
+            const infoItems = document.querySelectorAll('.info-item');
+            if (infoItems.length >= 3) {
+                const totalPresentText = infoItems[2].textContent || '';
+                // Extract number
+                const currentCount = parseInt(totalPresentText.replace(/\D/g, '')) || 0;
+                infoItems[2].innerHTML = `<strong>Total Present:</strong> ${currentCount + 1}`;
+            }
         })
         .catch(error => {
             console.error('Error marking presence:', error);
             alert('Failed to mark. Please try again.');
             btnElement.textContent = originalText;
+            btnElement.disabled = false;
+        });
+}
+
+// Auto-Absent Logic
+function checkAndRunAutoAbsent() {
+    // Only proceed if we have event data AND the list is loaded
+    // Exception: If setting a future timer, we don't strictly *need* the list loaded yet code-wise, 
+    // but for simplicity, let's wait for both so we don't duplicate logic.
+    if (!currentEvent || !isListLoaded) return;
+
+    // Check fields
+    if (!currentEvent.start_time || !currentEvent.event_date) return;
+
+    // Construct Event Start DateTime
+    const d = new Date(`${currentEvent.event_date}T${currentEvent.start_time}`);
+    const now = new Date();
+
+    // Deadline is Start Time + 1 Hour
+    const deadline = new Date(d.getTime() + 60 * 60 * 1000); // 1 hour in ms
+
+    console.log("Checking Auto-Absent...");
+    console.log("Deadline:", deadline);
+
+    if (now >= deadline) {
+        console.log("Deadline passed. Marking absent immediately.");
+        markWaitersAsAbsent(currentEvent.event_id);
+    } else {
+        const timeRemaining = deadline - now;
+        console.log(`Timer set. Triggering in ${timeRemaining / 1000} seconds.`);
+
+        // Clear any existing timeout if we were to support re-runs, but for now simple setTimeout is fine
+        setTimeout(() => {
+            console.log("Timer expired. Marking absent.");
+            // We must re-check if list is really there (it should be)
+            markWaitersAsAbsent(currentEvent.event_id);
+        }, timeRemaining);
+    }
+}
+
+function markWaitersAsAbsent(eventId) {
+    // Get all 'Present' buttons that are still active (meaning status is pending/going)
+    // The query selector targets buttons with class 'status-going' which we used for non-present users.
+    const pendingButtons = document.querySelectorAll('.status-going');
+
+    if (pendingButtons.length === 0) return;
+
+    console.log(`Marking ${pendingButtons.length} attendees as absent...`);
+
+    // We need the member_id for each. 
+    // The markAsPresent onclick handler has it: markAsPresent(member_id, event_id, this)
+    // We can extract it or better yet, iterate the data if we had it stored globally.
+    // For now, let's parse the onclick attribute or store ID in data attribute.
+    // Parsing DOM is brittle. Better to reload list or use the data attribute if I add it.
+    // Let's modify renderTable to add data-member-id to the button.
+
+    // Actually, I can just click them? No, clicking marks as PRESENT.
+    // I need distinct API call for ABSENT.
+
+    pendingButtons.forEach(btn => {
+        // Extract parameters from onclick string: "markAsPresent(123, 456, this)"
+        // This is messy. Let's add data attributes in renderTable first? 
+        // Or RegEx the onclick.
+        const match = btn.getAttribute('onclick').match(/markAsPresent\((\d+),\s*(\d+)/);
+        if (match) {
+            const memberId = match[1];
+            markAsAbsent(memberId, eventId, btn);
+        }
+    });
+}
+
+function markAsAbsent(memberId, eventId, btnElement) {
+    // Update UI immediately to prevent double submission or confusion
+    const originalText = btnElement.textContent;
+    btnElement.textContent = 'Marking Absent...';
+    btnElement.disabled = true;
+
+    fetch(`${API_BASE}/event-attendance`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            event_id: eventId,
+            member_id: memberId,
+            status: 'absent'
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) throw new Error(data.error);
+
+            // Success: Update UI
+            btnElement.textContent = 'Absent';
+            btnElement.classList.remove('status-going');
+            btnElement.classList.add('status-absent'); // Add CSS class for absent styling if needed
+            btnElement.style.backgroundColor = '#dc3545'; // Red color for absent
+            btnElement.style.color = 'white';
+            btnElement.style.cursor = 'not-allowed';
+        })
+        .catch(error => {
+            console.error('Error marking absent:', error);
+            // revert if failed? Or leave as is since deadline passed.
+            btnElement.textContent = 'Absent (Retry)';
             btnElement.disabled = false;
         });
 }

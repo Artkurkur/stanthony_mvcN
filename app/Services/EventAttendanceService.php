@@ -35,6 +35,15 @@ class EventAttendanceService
         }
 
         $data['status'] = $data['status'] ?? 'present';
+
+        // Check if attendance already exists
+        $existingId = $this->repository->findAttendanceId($data['event_id'], $data['member_id']);
+
+        if ($existingId) {
+            // Update existing record
+            return $this->repository->updateAttendance($existingId, $data);
+        }
+
         return $this->repository->createAttendance($data);
     }
 

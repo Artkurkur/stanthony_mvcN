@@ -51,6 +51,7 @@ require_once __DIR__ . '/../Controllers/RsvpController.php';
 // Notifications
 require_once __DIR__ . '/../Repositories/NotificationsRepository.php';
 require_once __DIR__ . '/../Services/NotificationsService.php';
+require_once __DIR__ . '/../Services/SmsService.php';
 require_once __DIR__ . '/../Controllers/NotificationsController.php';
 
 // Reports
@@ -148,7 +149,8 @@ $attendanceService = new EventAttendanceService($attendanceRepo);
 $feesService = new FeesService($feesRepo);
 $paymentMethodService = new PaymentMethodService($paymentMethodRepo);
 $rsvpService = new RsvpService($rsvpRepo);
-$notificationsService = new NotificationsService($notificationsRepo, $eventsRepo, $announcementsRepo, $alumniRepo);
+$smsService = new App\Services\SmsService();
+$notificationsService = new NotificationsService($notificationsRepo, $eventsRepo, $announcementsRepo, $alumniRepo, $smsService);
 $transactionService = new TransactionService($transactionRepo, $transactionDetailsRepo, $feesRepo, $alumniRepo);
 $logService = new LogService($logRepo);
 $reportService = new ReportService($db);

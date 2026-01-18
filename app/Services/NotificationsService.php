@@ -5,6 +5,7 @@ use App\Repositories\NotificationsRepository;
 use App\Repositories\EventsRepository;
 use App\Repositories\AnnouncementsRepository;
 use App\Repositories\AlumniRepository;
+use App\Services\SmsService;
 
 class NotificationsService
 {
@@ -12,17 +13,20 @@ class NotificationsService
     private EventsRepository $eventsRepo;
     private AnnouncementsRepository $announcementsRepo;
     private AlumniRepository $alumniRepo;
+    private SmsService $smsService;
 
     public function __construct(
         NotificationsRepository $notificationsRepo,
         EventsRepository $eventsRepo,
         AnnouncementsRepository $announcementsRepo,
-        AlumniRepository $alumniRepo
+        AlumniRepository $alumniRepo,
+        SmsService $smsService
     ) {
         $this->notificationsRepo = $notificationsRepo;
         $this->eventsRepo = $eventsRepo;
         $this->announcementsRepo = $announcementsRepo;
         $this->alumniRepo = $alumniRepo;
+        $this->smsService = $smsService;
     }
 
     public function getUserNotifications($member_id)
@@ -88,30 +92,47 @@ class NotificationsService
         if ($target === 'all') {
             $allUsers = $this->alumniRepo->getAll();
             foreach ($allUsers as $user) {
-                $recipients[] = $user['member_id'];
+                $recipients[] = [
+                    'id' => $user['member_id'],
+                    'phone' => $user['mobile_number']
+                ];
             }
         } elseif ($target === 'batch') {
-            // Filter locally or add method to Repo. 
-            // Since AlumniRepository has getAll, we can filter here for simplicity or add getByBatch.
-            // For now, filtering array from getAll (optimize later if needed)
             $allUsers = $this->alumniRepo->getAll();
             foreach ($allUsers as $user) {
                 if ($user['batch_year'] == $value) {
-                    $recipients[] = $user['member_id'];
+                    $recipients[] = [
+                        'id' => $user['member_id'],
+                        'phone' => $user['mobile_number']
+                    ];
                 }
             }
         } elseif ($target === 'user') {
-            $recipients[] = $value;
+            $user = $this->alumniRepo->getById($value);
+            if ($user) {
+                $recipients[] = [
+                    'id' => $user['member_id'],
+                    'phone' => $user['mobile_number']
+                ];
+            }
         }
 
         $count = 0;
-        foreach ($recipients as $member_id) {
+        foreach ($recipients as $recipient) {
             $this->notificationsRepo->create([
-                'member_id' => $member_id,
+                'member_id' => $recipient['id'],
                 'title' => $title,
                 'message' => $message,
                 'type' => $type
             ]);
+
+            // Send SMS if phone number exists
+            if (!empty($recipient['phone'])) {
+                // Shorten title for SMS context if needed, or just send message
+                $smsBody = "$title: $message";
+                $this->smsService->send($recipient['phone'], $smsBody);
+            }
+
             $count++;
         }
 

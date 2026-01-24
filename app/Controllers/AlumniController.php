@@ -197,6 +197,13 @@ class AlumniController
             if (strpos($contentType, 'application/json') !== false) {
                 // Handle JSON input
                 $data = json_decode(file_get_contents('php://input'), true) ?: [];
+
+                // 🔒 PROTECTION: Prevent demotion of Super Admin (ID 1)
+                if ($id === 1 && isset($data['role_id']) && (int) $data['role_id'] !== 1) {
+                    Response::json(['error' => 'SUPER ADMIN CANNOT BE DEMOTED. Role change rejected.'], 403);
+                    return;
+                }
+
                 $this->service->update($id, $data);
 
                 // Log Action
@@ -230,6 +237,12 @@ class AlumniController
 
         if ($id <= 0) {
             Response::json(['error' => 'Invalid ID'], 400);
+            return;
+        }
+
+        // 🔒 PROTECTION: Prevent deletion of Super Admin (ID 1)
+        if ($id === 1) {
+            Response::json(['error' => 'SUPER ADMIN CANNOT BE DELETED. This is a protected master account.'], 403);
             return;
         }
 

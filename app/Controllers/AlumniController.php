@@ -124,6 +124,9 @@ class AlumniController
     ====================== */
     public function index()
     {
+        $auth = new \App\Middleware\AuthMiddleware();
+        $auth->requireRole([1]); // Require Admin
+
         try {
             $data = $this->service->listAll();
             Response::json($data, 200);
@@ -140,6 +143,10 @@ class AlumniController
             Response::json(['error' => 'Invalid ID'], 400);
             return;
         }
+
+        $auth = new \App\Middleware\AuthMiddleware();
+        // Allow if Admin OR if the requested ID matches the logged-in user
+        $auth->requireOwnerOrAdmin($id);
 
         try {
             $alumni = $this->service->getById($id);

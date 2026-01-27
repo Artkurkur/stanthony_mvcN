@@ -2,6 +2,12 @@ const API_URL = "http://localhost:8000/api/alumni";
 
 // ✅ Load Roles and Alumni on startup
 document.addEventListener("DOMContentLoaded", () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Session expired. Please login again.");
+    window.location.href = "../index.html";
+    return;
+  }
   loadRoles();
   loadAlumni();
 });
@@ -94,7 +100,17 @@ form.addEventListener("submit", async (e) => {
 // LOAD ALL ALUMNI
 async function loadAlumni() {
   try {
-    const res = await fetch(API_URL);
+    const token = localStorage.getItem("token");
+    const res = await fetch(API_URL, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
+
+    if (res.status === 401 || res.status === 403) {
+      alert("Unauthorized access. Please login as Admin.");
+      window.location.href = "../index.html";
+      return;
+    }
+
     const alumni = await res.json();
     const tbody = document.querySelector("#alumniTable tbody");
     tbody.innerHTML = "";
@@ -159,7 +175,10 @@ async function loadRoles() {
 // FETCH SINGLE ALUMNI AND AUTO-FILL FORM
 async function editAlumni(id) {
   try {
-    const res = await fetch(`${API_URL}/${id}`);
+    const token = localStorage.getItem("token");
+    const res = await fetch(`${API_URL}/${id}`, {
+      headers: { "Authorization": `Bearer ${token}` }
+    });
     const data = await res.json();
 
     document.getElementById("member_id").value = data.member_id;

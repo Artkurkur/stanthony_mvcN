@@ -101,7 +101,8 @@ form div {
   margin-bottom: 10px;
 }
 
-input {
+input,
+select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -219,26 +220,31 @@ table {
 }
 
 .Fname {
-  width: 150px;
+  width: 20%;
 }
 
-.email {
-  width: 230px;
+.username {
+  width: 15%;
 }
 
 .BY {
-  width: 100px;
-  margin-left: 10px;
+  width: 12%;
+  /* Increased to prevent header wrapping */
   text-align: center;
 }
 
 .role {
-  width: 50px;
+  width: 13%;
   text-align: center;
 }
 
 .mobileN {
-  width: 110px;
+  width: 15%;
+  text-align: center;
+}
+
+.actions {
+  width: 25%;
   text-align: center;
 }
 
@@ -313,7 +319,8 @@ td {
     gap: 8px;
   }
 
-  input {
+  input,
+  select {
     font-size: 0.9rem;
   }
 

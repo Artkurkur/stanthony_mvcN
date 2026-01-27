@@ -46,7 +46,12 @@ class AlumniRepository
     public function getAll(): array
     {
         try {
-            $stmt = $this->db->query("SELECT member_id, fname, lname, username, role_id, mobile_number, batch_year FROM alumni");
+            $stmt = $this->db->query("
+                SELECT a.member_id, a.fname, a.lname, a.username, a.role_id, a.mobile_number, a.batch_year, r.role_name 
+                FROM alumni a
+                LEFT JOIN roles r ON a.role_id = r.id
+                ORDER BY r.role_name ASC, a.fname ASC
+            ");
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             throw $e;

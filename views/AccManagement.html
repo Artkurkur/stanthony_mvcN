@@ -37,11 +37,14 @@
 
         <div>
           <input type="number" id="batch_year" placeholder="Batch Year" required />
-          <input type="number" id="role_id" placeholder="Role ID" required />
+          <select id="role_id" required>
+            <option value="" disabled selected>Select Role</option>
+            <!-- Options populated by JS -->
+          </select>
         </div>
 
         <div>
-          <input type="password" id="password" placeholder="Password" required />
+          <input type="password" id="password" placeholder="Password (leave blank for updates)" />
         </div>
 
         <button type="submit" id="saveBtn">Add Alumni</button>

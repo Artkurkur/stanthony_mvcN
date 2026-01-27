@@ -23,7 +23,7 @@ class ReportService
                 e.event_name,
                 e.event_date,
                 COALESCE(SUM(t.total_amount), 0) as total_donations,
-                COUNT(DISTINCT t.member_id) as total_donors
+                COUNT(DISTINCT COALESCE(t.member_id, t.name)) as total_donors
             FROM events e
             LEFT JOIN transaction t ON e.event_id = t.event_id
             GROUP BY e.event_id

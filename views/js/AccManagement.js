@@ -176,6 +176,12 @@ async function editAlumni(id) {
     saveBtn.style.display = "none";
     updateBtn.style.display = "inline-block";
 
+    // Update Placeholder for Edit Mode
+    document.getElementById("password").placeholder = "Password (leave empty to keep current password)";
+
+    // Scroll to form
+    document.querySelector(".div-1").scrollIntoView({ behavior: "smooth" });
+
     // Set update handler
     updateBtn.onclick = async () => {
       const updatedData = getFormData();
@@ -202,6 +208,9 @@ async function editAlumni(id) {
           // Reset buttons
           saveBtn.style.display = "inline-block";
           updateBtn.style.display = "none";
+
+          // Reset Placeholder to Default
+          document.getElementById("password").placeholder = "Password";
         } else {
           alert(result.error || "Failed to update alumni");
         }

@@ -422,8 +422,19 @@ document.addEventListener('DOMContentLoaded', () => {
             li.className = 'event-item';
             li.dataset.id = event.event_id;
 
-            // Only show title as requested
-            li.innerHTML = `<span class="event-title">${event.event_name}</span>`;
+            // Format Date
+            let dateStr = event.event_date;
+            if (dateStr) {
+                const dateObj = new Date(dateStr);
+                if (!isNaN(dateObj)) {
+                    dateStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                }
+            } else {
+                dateStr = '';
+            }
+
+            // Show title and date
+            li.innerHTML = `<span class="event-title">${event.event_name}</span> <span class="event-date">${dateStr}</span>`;
             eventsList.appendChild(li);
         });
     };

@@ -725,6 +725,7 @@ html {
     transition: all 0.2s;
     display: flex;
     align-items: center;
+    justify-content: space-between; /* Push content to edges */
     background-color: #ffffff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     border: 1px solid #eee;
@@ -754,7 +755,9 @@ html {
 }
 
 .event-date {
-    display: none;
+    font-size: 0.85em;
+    color: #888;
+    white-space: nowrap; /* Prevent wrapping */
 }
 
 /* ========================================================================= */

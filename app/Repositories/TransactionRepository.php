@@ -22,12 +22,14 @@ class TransactionRepository
                 a.username, 
                 a.batch_year,
                 pm.method_name,
-                f.fee_name
+                f.fee_name,
+                e.event_name
             FROM transaction t
             LEFT JOIN alumni a ON t.member_id = a.member_id
             LEFT JOIN payment_method pm ON t.payment_method_id = pm.payment_method_id
             LEFT JOIN transaction_details td ON t.transaction_id = td.transaction_id
             LEFT JOIN fees f ON td.fee_id = f.fee_id
+            LEFT JOIN events e ON t.event_id = e.event_id
             ORDER BY t.transaction_date DESC
         ");
         $stmt->execute();

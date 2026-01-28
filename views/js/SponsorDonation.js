@@ -174,7 +174,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         payment_method: t.method_name,
                         payment_method: t.method_name,
                         receipt_url: t.receipt_url,
-                        transaction_type: t.transaction_type // Store type for filtering
+                        payment_method: t.method_name,
+                        receipt_url: t.receipt_url,
+                        transaction_type: t.transaction_type, // Store type for filtering
+                        eventName: t.event_name // Map event name from API
                     }));
 
                     // Reset to All on load
@@ -210,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.innerHTML = `
                 <td>${donation.name}</td>
                 <td>${donation.batch}</td>
-                <td>${donation.type}</td>
+                <td>${donation.type === 'Events' && donation.eventName ? `Event (${donation.eventName})` : donation.type}</td>
                 <td>${formatCurrency(donation.amount)}</td>
                 <td class="status-${donation.status ? donation.status.toLowerCase() : 'pending'}">${donation.status}</td>
                 <td>
